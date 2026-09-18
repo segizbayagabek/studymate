@@ -1,0 +1,9 @@
+.sm-diamond {
+  display: block;
+  flex: none;
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+.sm-diamond--peach { background: var(--sm-peach); }
+.sm-diamond--navy { background: var(--sm-navy); }
+.sm-diamond--faded { background: rgba(38, 42, 84, 0.25); }

@@ -1,0 +1,19 @@
+.sm-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  transform: rotate(45deg);
+  border-radius: var(--sm-r-md);
+}
+.sm-score--strong { background: var(--sm-peach); }
+.sm-score--good { background: var(--sm-peach-soft); }
+.sm-score--weak { background: rgba(38, 42, 84, 0.12); border-radius: 10px; }
+
+.sm-score__value {
+  transform: rotate(-45deg);
+  font-weight: 800;
+  color: var(--sm-navy);
+  line-height: 1;
+}
+.sm-score__suffix { font-size: 0.52em; }

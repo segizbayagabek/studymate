@@ -1,0 +1,13 @@
+.sm-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.sm-heading__text { min-width: 0; }
+.sm-heading__eyebrow { margin-bottom: 9px; }
+.sm-heading__title { font: 600 26px/1.2 var(--sm-sans); color: var(--sm-navy); }
+.sm-heading__sub { margin-top: 6px; font: 500 13px var(--sm-sans); color: var(--sm-ink-3); }
+.sm-heading__actions { display: flex; gap: 8px; flex-wrap: wrap; }

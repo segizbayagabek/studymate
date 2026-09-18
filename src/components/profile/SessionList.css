@@ -1,0 +1,19 @@
+.sm-sessions { display: flex; flex-direction: column; }
+.sm-sessions__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(38, 42, 84, 0.08);
+}
+.sm-sessions__row:last-child { border-bottom: 0; }
+.sm-sessions__title { font: 600 13.5px var(--sm-sans); color: var(--sm-navy); flex: 1; min-width: 0; }
+.sm-sessions__meta { font: 500 12.5px var(--sm-sans); color: var(--sm-ink-3); flex: none; }
+.sm-sessions__role {
+  font: 600 12px var(--sm-sans);
+  color: var(--sm-ink-3);
+  width: 96px;
+  text-align: right;
+  flex: none;
+}
+.sm-sessions__role.is-taught { color: var(--sm-terracotta); }

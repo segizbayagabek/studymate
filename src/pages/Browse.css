@@ -1,0 +1,2 @@
+.sm-browse__list { display: flex; flex-direction: column; gap: 14px; }
+.sm-browse__range { cursor: pointer; min-height: 44px; }

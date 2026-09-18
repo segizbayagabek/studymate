@@ -1,0 +1,28 @@
+.sm-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--sm-warm);
+  border: 1px solid rgba(38, 42, 84, 0.12);
+  border-radius: var(--sm-r-md);
+  padding: 8px 10px;
+  min-height: 48px;
+}
+
+.sm-stepper__btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--sm-r-pill);
+  background: var(--sm-paper);
+  border: 1px solid rgba(38, 42, 84, 0.14);
+  font: 700 15px var(--sm-sans);
+  color: var(--sm-navy);
+  cursor: pointer;
+}
+.sm-stepper__btn--primary {
+  background: var(--sm-navy);
+  border-color: var(--sm-navy);
+  color: var(--sm-peach);
+}
+
+.sm-stepper__value { font: 700 15px var(--sm-sans); color: var(--sm-navy); }

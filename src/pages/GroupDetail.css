@@ -1,0 +1,2 @@
+.sm-group__label { margin-bottom: 16px; }
+.sm-group__members { display: flex; flex-direction: column; gap: 11px; }

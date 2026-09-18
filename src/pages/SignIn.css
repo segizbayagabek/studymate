@@ -1,0 +1,111 @@
+.sm-screen.sm-signin {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+.sm-signin__brandside {
+  flex: 1.05 1 0;
+  min-width: 0;
+  background: var(--sm-navy);
+  padding: 56px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 34px;
+  min-height: 560px;
+}
+
+.sm-signin__lockup { display: flex; align-items: center; gap: 14px; }
+.sm-signin__logoBox {
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: var(--sm-paper);
+  flex: none;
+}
+.sm-signin__logoBox img { height: 86px; width: auto; display: block; }
+.sm-signin__wordmark { font: 500 22px/1.1 var(--sm-serif); color: #fff; }
+.sm-signin__by {
+  font: 700 9px/1.6 var(--sm-sans);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(233, 168, 124, 0.9);
+}
+
+.sm-signin__pitch {
+  font: 400 38px/1.2 var(--sm-serif);
+  color: #fff;
+  max-width: 19ch;
+  margin-bottom: 18px;
+}
+.sm-signin__quote { display: flex; align-items: flex-start; gap: 12px; max-width: 34ch; }
+.sm-signin__quote p {
+  font: italic 400 15px/1.6 var(--sm-serif);
+  color: var(--sm-on-navy-2);
+}
+
+.sm-signin__photo {
+  border-radius: 14px;
+  overflow: hidden;
+  height: 190px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.sm-signin__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.sm-signin__form {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 64px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+}
+.sm-signin__title { font: 600 28px/1.25 var(--sm-sans); color: var(--sm-navy); margin: 12px 0 8px; }
+.sm-signin__sub { font: 500 14px/1.6 var(--sm-sans); color: var(--sm-ink-3); }
+
+.sm-signin__fields { display: flex; flex-direction: column; gap: 14px; }
+.sm-signin__field { display: block; }
+.sm-signin__label {
+  display: block;
+  font: 600 12px var(--sm-sans);
+  color: var(--sm-ink-2);
+  margin-bottom: 7px;
+}
+.sm-signin__input {
+  display: flex;
+  align-items: center;
+  background: var(--sm-warm);
+  border: 1px solid rgba(38, 42, 84, 0.12);
+  border-radius: var(--sm-r-md);
+  padding: 0 16px;
+  min-height: 50px;
+}
+.sm-signin__input input {
+  border: 0;
+  background: transparent;
+  padding: 14px 0;
+  font: 500 15px var(--sm-sans);
+  color: var(--sm-navy);
+  min-width: 0;
+  flex: 1;
+}
+.sm-signin__input input:focus { outline: none; }
+.sm-signin__input:focus-within { outline: 2px solid var(--sm-peach); outline-offset: 1px; }
+.sm-signin__domain { font: 500 15px var(--sm-sans); color: var(--sm-ink-3); flex: none; }
+
+.sm-signin__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font: 600 12px var(--sm-sans);
+  flex-wrap: wrap;
+}
+.sm-signin__keep { display: flex; align-items: center; gap: 8px; color: var(--sm-ink-2); }
+.sm-signin__keep input { accent-color: var(--sm-navy); width: 16px; height: 16px; }
+.sm-signin__row a { color: var(--sm-terracotta); }
+
+.sm-signin__actions { display: flex; flex-direction: column; gap: 12px; }
+.sm-signin__legal { font: 500 11.5px/1.6 var(--sm-sans); color: var(--sm-ink-3); }
