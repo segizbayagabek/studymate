@@ -1,0 +1,39 @@
+.sm-meter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sm-meter__head { flex: none; }
+.sm-meter__label {
+  width: 74px;
+  display: block;
+  font: 600 11.5px var(--sm-sans);
+  color: var(--sm-ink-2);
+}
+.sm-meter__track {
+  flex: 1;
+  height: 6px;
+  border-radius: var(--sm-r-pill);
+  background: var(--sm-warm);
+  overflow: hidden;
+}
+.sm-meter__fill { height: 100%; background: var(--sm-navy); }
+.sm-meter__fill--accent { background: var(--sm-peach); }
+.sm-meter__num {
+  width: 30px;
+  flex: none;
+  text-align: right;
+  font: 700 11px var(--sm-sans);
+  color: var(--sm-navy);
+}
+
+/* stacked variant on the navy rating card */
+.sm-meter--onNavy { display: block; }
+.sm-meter--onNavy .sm-meter__head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.sm-meter--onNavy .sm-meter__label { width: auto; font-size: 12px; color: #fff; }
+.sm-meter--onNavy .sm-meter__num { width: auto; color: #fff; font-size: 12px; }
+.sm-meter--onNavy .sm-meter__track { background: rgba(255, 255, 255, 0.14); }

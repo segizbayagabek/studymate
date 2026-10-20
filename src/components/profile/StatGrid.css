@@ -1,0 +1,8 @@
+.sm-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.sm-stats__item { background: var(--sm-warm); border-radius: var(--sm-r-lg); padding: 20px; }
+.sm-stats__value { font: 700 26px/1 var(--sm-sans); color: var(--sm-navy); margin-bottom: 6px; }
+.sm-stats__label { font: 600 11.5px var(--sm-sans); color: var(--sm-ink-3); }

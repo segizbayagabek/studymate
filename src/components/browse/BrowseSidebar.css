@@ -1,0 +1,24 @@
+.sm-week { padding: 22px; }
+.sm-week__figure { display: flex; align-items: baseline; gap: 8px; margin-top: 12px; }
+.sm-week__count { font: 700 34px/1 var(--sm-sans); color: #fff; }
+.sm-week__unit { font: 600 13px var(--sm-sans); color: rgba(255, 255, 255, 0.7); }
+.sm-week__note { margin-top: 12px; font: 500 12.5px/1.6 var(--sm-sans); color: rgba(255, 255, 255, 0.7); }
+
+.sm-picked__list { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+.sm-picked__item { display: flex; gap: 12px; align-items: flex-start; }
+.sm-picked__icon {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 9px;
+  background: var(--sm-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sm-picked__title { font: 600 13px/1.4 var(--sm-sans); color: var(--sm-navy); }
+.sm-picked__meta { font: 500 11.5px/1.6 var(--sm-sans); color: var(--sm-ink-3); }
+.sm-picked__prompt { font: 600 14px/1.45 var(--sm-sans); color: var(--sm-navy); margin-bottom: 6px; }
+.sm-picked__promptNote { margin-bottom: 14px; font-size: 12.5px; }
+
+.sm-sidebar__quote { margin-top: auto; }

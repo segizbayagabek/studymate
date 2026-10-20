@@ -1,0 +1,46 @@
+:root {
+  /* Brand */
+  --sm-navy: #262A54;
+  --sm-navy-hover: #1C2046;
+  --sm-peach: #E9A87C;
+  --sm-peach-soft: #F6D9C2;
+  --sm-terracotta: #B9703C;
+  --sm-cocoa: #5A3418;
+
+  /* Surfaces */
+  --sm-bg: #E7E3DA;
+  --sm-paper: #FDFBF7;
+  --sm-warm: #F5F2EC;
+
+  /* Ink */
+  --sm-ink: #262A54;
+  --sm-ink-2: #4B5163;
+  --sm-ink-3: #6B7280;
+  --sm-on-navy: #ffffff;
+  --sm-on-navy-2: rgba(255, 255, 255, 0.72);
+
+  /* Lines */
+  --sm-line: rgba(38, 42, 84, 0.1);
+  --sm-line-strong: rgba(38, 42, 84, 0.18);
+  --sm-line-navy: rgba(255, 255, 255, 0.25);
+
+  /* Radii */
+  --sm-r-sm: 7px;
+  --sm-r-md: 12px;
+  --sm-r-lg: 16px;
+  --sm-r-xl: 20px;
+  --sm-r-pill: 999px;
+
+  /* Elevation */
+  --sm-shadow-card: 0 2px 10px rgba(38, 42, 84, 0.05);
+  --sm-shadow-screen: 0 18px 44px rgba(38, 42, 84, 0.12);
+
+  /* Type */
+  --sm-sans: Manrope, system-ui, -apple-system, sans-serif;
+  --sm-serif: Newsreader, Georgia, "Times New Roman", serif;
+
+  /* Layout */
+  --sm-max: 100%;
+  --sm-gutter: 40px;
+  --sm-content: 1720px;
+}

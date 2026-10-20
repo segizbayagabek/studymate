@@ -1,0 +1,49 @@
+.sm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--sm-r-pill);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  min-height: 44px;
+  white-space: nowrap;
+}
+
+.sm-btn--sm { padding: 10px 18px; font-size: 12.5px; min-height: 40px; }
+.sm-btn--md { padding: 13px 22px; font-size: 13px; }
+.sm-btn--lg { padding: 16px 30px; font-size: 14px; }
+
+.sm-btn--block { width: 100%; }
+
+.sm-btn--primary { background: var(--sm-navy); color: #fff; }
+.sm-btn--primary:hover { background: var(--sm-navy-hover); }
+
+.sm-btn--secondary {
+  background: transparent;
+  border-color: var(--sm-line-strong);
+  color: var(--sm-navy);
+  font-weight: 600;
+}
+.sm-btn--secondary:hover { background: var(--sm-warm); }
+
+.sm-btn--peach { background: var(--sm-peach); color: var(--sm-navy); }
+.sm-btn--peach:hover { background: #E09A68; }
+
+.sm-btn--ghostOnNavy {
+  background: transparent;
+  border-color: var(--sm-line-navy);
+  color: #fff;
+  font-weight: 600;
+}
+.sm-btn--ghostOnNavy:hover { background: rgba(255, 255, 255, 0.08); }
+
+.sm-btn--quiet {
+  background: transparent;
+  border-color: rgba(38, 42, 84, 0.14);
+  color: var(--sm-ink-3);
+  font-weight: 600;
+}
+.sm-btn--quiet:hover { background: var(--sm-warm); }

@@ -1,0 +1,29 @@
+.sm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border-radius: var(--sm-r-pill);
+  border: 1px solid transparent;
+  font: 600 12.5px var(--sm-sans);
+  white-space: nowrap;
+}
+
+.sm-chip--default {
+  background: var(--sm-warm);
+  border-color: rgba(38, 42, 84, 0.12);
+  color: var(--sm-ink-2);
+}
+.sm-chip--active { background: var(--sm-navy); color: #fff; }
+.sm-chip--outline { border-color: rgba(38, 42, 84, 0.15); color: var(--sm-ink-2); }
+.sm-chip--dashed {
+  background: var(--sm-paper);
+  border: 1px dashed rgba(38, 42, 84, 0.25);
+  color: var(--sm-terracotta);
+}
+.sm-chip--warm {
+  background: var(--sm-warm);
+  color: var(--sm-ink-2);
+  font-size: 11px;
+  padding: 6px 11px;
+}

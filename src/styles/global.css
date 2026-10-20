@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap");
+@import "./tokens.css";
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--sm-bg);
+  color: var(--sm-ink);
+  font-family: var(--sm-sans);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+}
+
+a { color: var(--sm-navy); text-decoration: none; }
+a:hover { color: var(--sm-terracotta); }
+
+button { font-family: inherit; }
+
+h1, h2, h3, h4, p { margin: 0; }
+
+/* Shared utilities used across screens */
+.sm-eyebrow {
+  font: 700 10px/1 var(--sm-sans);
+  letter-spacing: 0.18em;
+  color: var(--sm-terracotta);
+  text-transform: uppercase;
+}
+.sm-eyebrow--onNavy { color: var(--sm-peach); }
+.sm-eyebrow--muted { color: var(--sm-ink-3); letter-spacing: 0.16em; font-size: 9.5px; }
+
+.sm-serif-quote {
+  font: italic 400 12.5px/1.6 var(--sm-serif);
+  color: var(--sm-ink-3);
+}
+
+.sm-screen {
+  background: var(--sm-paper);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The screen body grows to fill the laptop viewport */
+.sm-screen > *:last-child { flex: 1; }
+
+.sm-shell {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--sm-paper);
+}
+
+.sm-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

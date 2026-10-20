@@ -1,0 +1,26 @@
+.sm-applicants { flex: 1; padding: 34px var(--sm-gutter) 44px; }
+
+.sm-applicants__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-transform: none;
+}
+.sm-applicants__eyebrow > span { letter-spacing: 0.14em; text-transform: uppercase; }
+
+.sm-applicants__sort { cursor: pointer; min-height: 44px; }
+.sm-applicants__list { display: flex; flex-direction: column; gap: 13px; }
+
+.sm-applicants__more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px;
+  min-height: 44px;
+  background: transparent;
+  border: 0;
+  font: 600 12.5px var(--sm-sans);
+  color: var(--sm-terracotta);
+  cursor: pointer;
+}

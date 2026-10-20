@@ -1,0 +1,11 @@
+.sm-course {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: var(--sm-r-sm);
+  font: 700 10.5px var(--sm-sans);
+  letter-spacing: 0.06em;
+}
+.sm-course--navy { background: var(--sm-navy); color: #fff; }
+.sm-course--warm { background: var(--sm-warm); color: var(--sm-navy); }
+.sm-course--peach { background: var(--sm-peach); color: var(--sm-navy); }
+.sm-course--muted { background: rgba(38, 42, 84, 0.1); color: var(--sm-navy); }

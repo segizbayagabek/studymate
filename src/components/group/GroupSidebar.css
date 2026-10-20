@@ -1,0 +1,30 @@
+.sm-gs__map { padding: 0; overflow: hidden; }
+.sm-gs__mapImage {
+  height: 152px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(135deg, rgba(38, 42, 84, 0.07) 0 8px, transparent 8px 16px);
+  border-bottom: 1px solid rgba(38, 42, 84, 0.08);
+  font: 500 11px ui-monospace, Menlo, monospace;
+  color: var(--sm-ink-3);
+}
+.sm-gs__mapBody { padding: 16px 18px; }
+.sm-gs__mapText { margin-top: 7px; font: 600 13.5px/1.5 var(--sm-sans); color: var(--sm-navy); }
+
+.sm-gs__agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-top: 12px;
+  font: 500 12.5px/1.5 var(--sm-sans);
+  color: var(--sm-ink-2);
+}
+.sm-gs__agendaRow { display: flex; gap: 10px; }
+.sm-gs__time { font-weight: 700; color: var(--sm-navy); flex: none; }
+
+.sm-gs__after {
+  margin: 10px 0 14px;
+  font: 500 12.5px/1.7 var(--sm-sans);
+  color: rgba(255, 255, 255, 0.78);
+}

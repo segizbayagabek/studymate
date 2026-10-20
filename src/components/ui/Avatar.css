@@ -1,0 +1,15 @@
+.sm-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border-radius: var(--sm-r-pill);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.sm-avatar--navy { background: var(--sm-navy); color: #fff; }
+.sm-avatar--light {
+  background: var(--sm-warm);
+  border: 1px solid var(--sm-line);
+  color: var(--sm-navy);
+}

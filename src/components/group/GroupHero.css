@@ -1,0 +1,28 @@
+.sm-ghero {
+  background: var(--sm-navy);
+  padding: 34px var(--sm-gutter) 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.sm-ghero__tags { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.sm-ghero__status {
+  font: 700 9.5px var(--sm-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(233, 168, 124, 0.9);
+}
+.sm-ghero__title {
+  font: 400 33px/1.2 var(--sm-serif);
+  color: #fff;
+  max-width: 26ch;
+  margin-bottom: 10px;
+}
+.sm-ghero__desc {
+  font: 500 13.5px/1.6 var(--sm-sans);
+  color: var(--sm-on-navy-2);
+  max-width: 52ch;
+}
+.sm-ghero__actions { flex: none; display: flex; gap: 10px; flex-wrap: wrap; }

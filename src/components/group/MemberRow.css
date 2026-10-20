@@ -1,0 +1,33 @@
+.sm-member {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--sm-warm);
+  border-radius: 14px;
+}
+.sm-member__who { min-width: 0; }
+.sm-member__name { font: 700 14.5px var(--sm-sans); color: var(--sm-navy); }
+.sm-member__badge {
+  font: 700 10px var(--sm-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sm-terracotta);
+  margin-left: 6px;
+}
+.sm-member__faculty { font: 500 12px var(--sm-sans); color: var(--sm-ink-3); }
+.sm-member__meta {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: none;
+}
+.sm-member__role { font: 600 12px var(--sm-sans); color: var(--sm-ink-2); }
+.sm-member__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 12px var(--sm-sans);
+  color: var(--sm-navy);
+}
