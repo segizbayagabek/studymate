@@ -7,10 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 .env
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
 node_modules
 dist
 dist-ssr
@@ -26,7 +23,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-<<<<<<< HEAD
-=======
-target/
->>>>>>> origin/main

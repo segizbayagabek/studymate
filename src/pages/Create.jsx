@@ -7,7 +7,6 @@ import DescriptionField from "../components/create/DescriptionField.jsx";
 import PlacePicker from "../components/create/PlacePicker.jsx";
 import WhenFields from "../components/create/WhenFields.jsx";
 import PreferenceChips from "../components/create/PreferenceChips.jsx";
-import ReviewToggle from "../components/create/ReviewToggle.jsx";
 import PreviewSidebar from "../components/create/PreviewSidebar.jsx";
 import { createGroup, getUser, initialsOf, toEnum } from "../api.js";
 
@@ -56,9 +55,7 @@ export default function Create() {
   const [day, setDay] = useState(days[0]);
   const [time, setTime] = useState(times[2]);
   const [groupSize, setGroupSize] = useState(4);
-  const [level, setLevel] = useState("BEGINNER");
   const [chosenPreferences, setChosenPreferences] = useState(["Quiet work"]);
-  const [reviewApplicants, setReviewApplicants] = useState(true);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -75,7 +72,6 @@ export default function Create() {
     seatsLeft: groupSize - 1, // you already take one seat
     groupSize: groupSize,
     owner: me,
-    reviewApplicants: reviewApplicants,
     highlight: true,
     mine: true,
   };
@@ -102,7 +98,6 @@ export default function Create() {
       endTime: endTime,
       preferences: chosenPreferences.map(toEnum),
       groupSize: groupSize,
-      level: level,
     })
       .then(() => navigate("/browse"))
       .catch((e) => setError(e.message));
@@ -131,14 +126,6 @@ export default function Create() {
               setTitle={setTitle}
             />
 
-            <label className="flex flex-col gap-2 text-sm font-semibold">
-              Knowledge level
-              <select value={level} onChange={(event) => setLevel(event.target.value)} className="rounded-xl border border-navy/20 bg-warm px-4 py-3">
-                <option value="BEGINNER">Beginner</option>
-                <option value="INTERMEDIATE">Intermediate</option>
-                <option value="ADVANCED">Advanced</option>
-              </select>
-            </label>
             <DescriptionField description={description} setDescription={setDescription} />
 
             <PlacePicker
@@ -166,18 +153,11 @@ export default function Create() {
               setChosen={setChosenPreferences}
             />
 
-            <ReviewToggle on={reviewApplicants} setOn={setReviewApplicants} />
-
             {error && <p className="text-[13px] font-semibold text-red-600">{error}</p>}
 
-            <div className="flex gap-3">
-              <button type="submit" className="rounded-full bg-navy px-10 py-4 text-sm font-bold text-white hover:bg-navy-dark">
-                Post request
-              </button>
-              <button type="button" className="rounded-full border border-navy/15 px-9 py-4 text-sm font-semibold hover:bg-warm">
-                Save as draft
-              </button>
-            </div>
+            <button type="submit" className="w-fit rounded-full bg-navy px-10 py-4 text-sm font-bold text-white hover:bg-navy-dark">
+              Post request
+            </button>
           </form>
         </main>
 

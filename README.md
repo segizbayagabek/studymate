@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # StudyMate — Frontend
 
 The React web app for **StudyMate**, a tool that helps SDU students find people for group study.
@@ -61,10 +60,3 @@ src/
 | `/`       | Login  | Sign in with an SDU account           |
 | `/browse` | Browse | See open study groups and filter them |
 | `/create` | Create | Post a new study request              |
-=======
-v# Trello Set Up 
-## Link:[ https://trello.com/b/v8MH5LzW/studymate-board](https://trello.com/b/Qa1b2SdW/studymate-pm)
-
-# GitHub Set Up 
-## Repository:https://github.com/segizbayagabek/studymate
->>>>>>> origin/main

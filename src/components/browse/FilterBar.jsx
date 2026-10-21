@@ -1,18 +1,27 @@
-<<<<<<< HEAD
 import Diamond from "../common/Diamond.jsx";
 
-export default function FilterBar() {
+const places = ["Any", "Library", "Canteen", "Top floor"];
+
+const times = ["Any", "Morning", "Afternoon", "Evening"];
+
+export default function FilterBar({ subjects, filters, setFilters }) {
+  function change(name, value) {
+    setFilters({ ...filters, [name]: value });
+  }
+
   return (
     <div className="mb-6 flex flex-wrap gap-2 rounded-2xl bg-warm p-3.5 text-[12.5px] font-semibold">
-      <FilterButton name="Subject" value="All" />
-      <FilterButton name="Place" value="Any" />
-      <FilterButton name="Time" value="Afternoon" />
+      <FilterSelect name="Subject" value={filters.subject} options={["All", ...subjects]} onChange={(value) => change("subject", value)} />
+      <FilterSelect name="Place" value={filters.place} options={places} onChange={(value) => change("place", value)} />
+      <FilterSelect name="Time" value={filters.time} options={times} onChange={(value) => change("time", value)} />
       <div className="flex items-center gap-2 rounded-full bg-navy px-3.5 py-2 text-white">
         <Diamond />
         Matches me first
       </div>
       <div className="flex-1"></div>
       <input
+        value={filters.search}
+        onChange={(e) => change("search", e.target.value)}
         placeholder="Search subject or course code"
         className="w-60 rounded-full border border-navy/10 bg-paper px-4 py-2 font-medium outline-none placeholder:text-muted"
       />
@@ -20,38 +29,19 @@ export default function FilterBar() {
   );
 }
 
-function FilterButton({ name, value }) {
+function FilterSelect({ name, value, options, onChange }) {
   return (
-    <div className="flex items-center gap-2 rounded-full border border-navy/10 bg-paper px-3.5 py-2">
-      {name} <span className="text-muted">{value}</span> <span className="text-peach-dark">▾</span>
-=======
-import Diamond from "../ui/Diamond";
-import "./FilterBar.css";
-
-export default function FilterBar({ filters, matchFirst = true, onToggleMatchFirst }) {
-  return (
-    <div className="sm-filters">
-      <div className="sm-filters__strip">
-        {filters.map((filter) => (
-          <button type="button" className="sm-filters__chip" key={filter.label}>
-            {filter.label} <span className="sm-filters__value">{filter.value}</span>
-            <span className="sm-filters__caret">▾</span>
-          </button>
+    <label className="flex items-center gap-2 rounded-full border border-navy/10 bg-paper py-2 pr-2.5 pl-3.5">
+      {name}
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="cursor-pointer bg-transparent text-muted outline-none"
+      >
+        {options.map((option) => (
+          <option key={option}>{option}</option>
         ))}
-        <button
-          type="button"
-          className={`sm-filters__chip sm-filters__chip--active ${matchFirst ? "is-on" : ""}`}
-          onClick={onToggleMatchFirst}
-        >
-          <Diamond size={7} />
-          Matches me first
-        </button>
-      </div>
-      <label className="sm-filters__search">
-        <span className="sm-sr-only">Search subject or course code</span>
-        <input type="search" placeholder="Search subject or course code" />
-      </label>
->>>>>>> origin/main
-    </div>
+      </select>
+    </label>
   );
 }
