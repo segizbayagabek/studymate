@@ -5,6 +5,7 @@ const links = [
   { label: "Browse", to: "/browse" },
   { label: "Create", to: "/create" },
   { label: "My groups", to: "/groups" },
+  { label: "Requested", to: "/requested" },
   { label: "Profile", to: "/profile" },
 ];
 

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Navbar from "../components/common/Navbar.jsx";
@@ -7,16 +6,25 @@ import FilterBar from "../components/browse/FilterBar.jsx";
 import RequestCard from "../components/browse/RequestCard.jsx";
 import FullGroupCard from "../components/browse/FullGroupCard.jsx";
 import Sidebar from "../components/browse/Sidebar.jsx";
-import { fromEnum, getGroups, getMyRequests, getUser, initialsOf, joinGroup } from "../api.js";
+import { fromEnum, getGroups, getMyRequests, getUser, initialsOf, joinGroup, whenText } from "../api.js";
 
-function dayLabel(date) {
-  const today = new Date();
-  const meeting = new Date(date + "T00:00:00");
-  const daysAway = Math.round((meeting - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
+function partOfDay(time) {
+  const hour = Number(time.slice(0, 2));
+  if (hour < 12) return "Morning";
+  if (hour < 17) return "Afternoon";
+  return "Evening";
+}
 
-  if (daysAway === 0) return "Today";
-  if (daysAway === 1) return "Tomorrow";
-  return meeting.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+function matchesFilters(group, filters) {
+  const search = filters.search.trim().toLowerCase();
+  const text = (group.subjectName + " " + group.courseCode + " " + group.title).toLowerCase();
+
+  return (
+    (filters.subject === "All" || group.subjectName === filters.subject) &&
+    (filters.place === "Any" || fromEnum(group.place) === filters.place) &&
+    (filters.time === "Any" || partOfDay(group.startTime) === filters.time) &&
+    (search === "" || text.includes(search))
+  );
 }
 
 function toCard(group, user, sentGroupIds) {
@@ -27,7 +35,7 @@ function toCard(group, user, sentGroupIds) {
     title: group.subjectName + " — " + group.title,
     description: group.description,
     place: fromEnum(group.place),
-    time: dayLabel(group.meetingDate) + ", " + group.startTime.slice(0, 5) + " – " + group.endTime.slice(0, 5),
+    time: whenText(group),
     style: group.preferences.length > 0 ? group.preferences.map(fromEnum).join(" · ") : "No preferences",
     seatsLeft: group.seatsLeft,
     groupSize: group.groupSize,
@@ -44,6 +52,7 @@ export default function Browse() {
   const userId = user ? user.id : null;
   const [groups, setGroups] = useState([]);
   const [sentGroupIds, setSentGroupIds] = useState([]);
+  const [filters, setFilters] = useState({ subject: "All", place: "Any", time: "Any", search: "" });
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -65,7 +74,10 @@ export default function Browse() {
       .catch((e) => setError(e.message));
   }
 
-  const cards = groups.map((group) => toCard(group, user, sentGroupIds));
+  const subjects = [...new Set(groups.map((group) => group.subjectName))];
+  const cards = groups
+    .filter((group) => matchesFilters(group, filters))
+    .map((group) => toCard(group, user, sentGroupIds));
 
   return (
     <div className="flex min-h-screen flex-col bg-paper">
@@ -74,11 +86,16 @@ export default function Browse() {
       <div className="grid flex-1 grid-cols-[1fr_316px]">
         <main className="border-r border-navy/10 p-8">
           <BrowseTitle count={cards.length} />
-          <FilterBar />
+          <FilterBar subjects={subjects} filters={filters} setFilters={setFilters} />
 
           {error && <p className="mb-4 text-[13px] font-semibold text-red-600">{error}</p>}
 
           <div className="flex flex-col gap-3.5">
+            {cards.length === 0 && (
+              <p className="rounded-2xl border border-dashed border-navy/20 p-6 text-sm font-medium text-muted">
+                {groups.length === 0 ? "No open groups right now." : "No groups match these filters."}
+              </p>
+            )}
             {cards.map((card) => (
               <RequestCard key={card.id} request={card} onJoin={() => handleJoin(card.group)} />
             ))}
@@ -89,65 +106,5 @@ export default function Browse() {
         <Sidebar />
       </div>
     </div>
-=======
-import { useMemo, useState } from "react";
-import AppLayout from "../components/layout/AppLayout";
-import SplitPage from "../components/layout/SplitPage";
-import PageHeading from "../components/layout/PageHeading";
-import Chip from "../components/ui/Chip";
-import FilterBar from "../components/browse/FilterBar";
-import RequestCard from "../components/browse/RequestCard";
-import FullRequestCard from "../components/browse/FullRequestCard";
-import BrowseSidebar from "../components/browse/BrowseSidebar";
-import { requests, fullRequest, suggestions, filters } from "../data/requests";
-import "./Browse.css";
-
-export default function Browse() {
-  const [range, setRange] = useState("Today");
-  const [matchFirst, setMatchFirst] = useState(true);
-
-  const list = useMemo(
-    () => (matchFirst ? [...requests].sort((a, b) => b.match - a.match) : requests),
-    [matchFirst]
-  );
-
-  return (
-    <AppLayout bleed>
-      <SplitPage
-        asideWidth={316}
-        aside={<BrowseSidebar sessionsJoined={3} suggestions={suggestions} />}
-      >
-        <PageHeading
-          eyebrow="Open requests · today"
-          title="14 groups forming on campus"
-          actions={["Today", "This week"].map((label) => (
-            <Chip
-              as="button"
-              type="button"
-              key={label}
-              tone={range === label ? "active" : "outline"}
-              onClick={() => setRange(label)}
-              className="sm-browse__range"
-            >
-              {label}
-            </Chip>
-          ))}
-        />
-
-        <FilterBar
-          filters={filters}
-          matchFirst={matchFirst}
-          onToggleMatchFirst={() => setMatchFirst((v) => !v)}
-        />
-
-        <div className="sm-browse__list">
-          {list.map((request) => (
-            <RequestCard key={request.id} request={request} />
-          ))}
-          <FullRequestCard request={fullRequest} />
-        </div>
-      </SplitPage>
-    </AppLayout>
->>>>>>> origin/main
   );
 }

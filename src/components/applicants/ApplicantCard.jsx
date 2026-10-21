@@ -1,52 +1,67 @@
-import { Link } from "react-router-dom";
-import Avatar from "../ui/Avatar";
-import Button from "../ui/Button";
-import Chip from "../ui/Chip";
-import Meter from "../ui/Meter";
-import Panel from "../ui/Panel";
-import ScoreBadge from "../ui/ScoreBadge";
-import "./ApplicantCard.css";
+import ScoreDiamond from "./ScoreDiamond.jsx";
+import ScoreBreakdown from "./ScoreBreakdown.jsx";
+import { fromEnum, initialsOf, timeRange } from "../../api.js";
 
-export default function ApplicantCard({ applicant, onAccept, onDecline }) {
-  const { score, tier, tierLabel, initials, name, faculty, note, tags, breakdown, hint } = applicant;
-  const strong = tier === "strong";
+function hintFor(applicant) {
+  if (applicant.breakdown.level < 60) return "Level gap is wide — a good chance to teach.";
+  if (applicant.breakdown.time < 100) return "Only part of the session fits their free time.";
+  return "";
+}
+
+export default function ApplicantCard({ applicant, canAccept, onAccept, onDecline }) {
+  const strong = applicant.score >= 85;
 
   return (
-    <Panel as="article" raised={strong} className="sm-applicant">
-      <div className="sm-applicant__score">
-        <ScoreBadge score={score} tier={tier} size={74} />
-        <span className={`sm-applicant__tier ${strong ? "is-strong" : ""}`}>{tierLabel}</span>
-      </div>
+    <article className="grid grid-cols-[140px_1fr_320px_220px] items-center gap-8 rounded-[22px] border border-navy/10 bg-paper px-8 py-7 shadow-[0_2px_10px_rgba(38,42,84,0.05)]">
+      <ScoreDiamond score={applicant.score} />
 
-      <div className="sm-applicant__who">
-        <div className="sm-applicant__id">
-          <Avatar initials={initials} size={34} tone={strong ? "navy" : "light"} />
+      <div>
+        <div className="flex items-center gap-3">
+          <div
+            className={
+              "flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-bold " +
+              (strong ? "bg-navy text-white" : "border border-navy/15 bg-warm")
+            }
+          >
+            {initialsOf(applicant.applicant.name)}
+          </div>
           <div>
-            <div className="sm-applicant__name">{name}</div>
-            <div className="sm-applicant__faculty">{faculty}</div>
+            <div className="text-[19px] font-semibold">{applicant.applicant.name}</div>
+            <div className="text-[13.5px] font-medium text-muted">
+              {fromEnum(applicant.level)} level · free {timeRange(applicant.availableFrom, applicant.availableTo)}
+            </div>
           </div>
         </div>
-        <p className="sm-applicant__note">“{note}”</p>
-        <div className="sm-applicant__tags">
-          {tags.map((tag) => (
-            <Chip tone="warm" key={tag}>{tag}</Chip>
-          ))}
-        </div>
+
+        {applicant.note && (
+          <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed font-medium text-ink">“{applicant.note}”</p>
+        )}
+
+        {applicant.preferences.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {applicant.preferences.map((preference) => (
+              <span key={preference} className="rounded-full bg-warm px-3.5 py-1.5 text-[12.5px] font-semibold text-ink">
+                {fromEnum(preference)}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      <div className="sm-applicant__breakdown">
-        <div className="sm-eyebrow sm-eyebrow--muted">Score breakdown</div>
-        {breakdown.map((row) => (
-          <Meter key={row.label} label={row.label} value={row.value} accent={row.accent} />
-        ))}
-        {hint && <div className="sm-applicant__hint">{hint}</div>}
-      </div>
+      <ScoreBreakdown breakdown={applicant.breakdown} hint={hintFor(applicant)} />
 
-      <div className="sm-applicant__actions">
-        <Button variant="primary" block onClick={() => onAccept?.(applicant)}>Accept</Button>
-        <Button variant="secondary" block onClick={() => onDecline?.(applicant)}>Decline</Button>
-        <Link to="/profile" className="sm-applicant__link">View profile</Link>
+      <div className="flex flex-col gap-3">
+        <button
+          onClick={onAccept}
+          disabled={!canAccept}
+          className="rounded-full bg-navy py-4 text-sm font-bold text-white hover:bg-navy-dark disabled:opacity-40"
+        >
+          Accept
+        </button>
+        <button onClick={onDecline} className="rounded-full border border-navy/15 py-4 text-sm font-semibold hover:bg-warm">
+          Decline
+        </button>
       </div>
-    </Panel>
+    </article>
   );
 }

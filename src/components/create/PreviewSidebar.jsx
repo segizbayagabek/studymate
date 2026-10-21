@@ -8,7 +8,7 @@ export default function PreviewSidebar({ request }) {
       <div>
         <Label className="mb-4">Live preview</Label>
 
-        <div className="rounded-2xl border border-l-[3px] border-navy/10 border-l-peach bg-paper p-6">
+        <div className="rounded-l-md rounded-r-2xl border border-l-[3px] border-navy/10 border-l-peach bg-paper p-6">
           <CourseTag code={request.code || "CODE"} dark />
           <h3 className="mt-3 mb-3 text-[19px] leading-snug font-semibold">{request.title}</h3>
 

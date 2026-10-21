@@ -12,7 +12,7 @@ async function request(method, url, body) {
     method: method,
     headers: { "Content-Type": "application/json" },
     body: body ? JSON.stringify(body) : undefined,
-  }).catch(() => { throw new Error("Cannot connect to backend. Start Spring Boot on localhost:8080."); });
+  });
 
   const data = await response.json().catch(() => null);
 
@@ -70,4 +70,53 @@ export function initialsOf(name) {
     .join("")
     .slice(0, 2)
     .toUpperCase();
+}
+
+export function getMyGroups(userId) {
+  return request("GET", "/api/users/" + userId + "/groups");
+}
+
+export function getGroup(userId, groupId) {
+  return request("GET", "/api/users/" + userId + "/groups/" + groupId);
+}
+
+export function getApplicants(userId, groupId) {
+  return request("GET", "/api/users/" + userId + "/groups/" + groupId + "/requests");
+}
+
+export function acceptRequest(userId, requestId) {
+  return request("PATCH", "/api/users/" + userId + "/requests/" + requestId + "/accept");
+}
+
+export function declineRequest(userId, requestId) {
+  return request("PATCH", "/api/users/" + userId + "/requests/" + requestId + "/reject");
+}
+
+export function cancelRequest(userId, requestId) {
+  return request("PATCH", "/api/users/" + userId + "/requests/" + requestId + "/cancel");
+}
+
+export function dayLabel(date) {
+  const today = new Date();
+  const meeting = new Date(date + "T00:00:00");
+  const daysAway = Math.round((meeting - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
+
+  if (daysAway === 0) return "Today";
+  if (daysAway === 1) return "Tomorrow";
+  return meeting.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+}
+
+export function timeRange(from, to) {
+  return from.slice(0, 5) + " – " + to.slice(0, 5);
+}
+
+export function whenText(group) {
+  return dayLabel(group.meetingDate) + ", " + timeRange(group.startTime, group.endTime);
+}
+
+export function isPast(group) {
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return group.meetingDate < today.getFullYear() + "-" + month + "-" + day;
 }

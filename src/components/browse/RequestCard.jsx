@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+import { Link } from "react-router-dom";
 import Diamond from "../common/Diamond.jsx";
 import CourseTag from "../common/CourseTag.jsx";
 
@@ -17,7 +17,7 @@ export default function RequestCard({ request, onJoin }) {
     <article
       className={
         "rounded-[18px] border border-navy/10 bg-paper px-6 py-5.5 " +
-        (request.highlight ? "border-l-[3px] border-l-peach shadow-[0_2px_10px_rgba(38,42,84,0.05)]" : "")
+        (request.highlight ? "rounded-l-md border-l-[3px] border-l-peach shadow-[0_2px_10px_rgba(38,42,84,0.05)]" : "")
       }
     >
       <div className="flex justify-between gap-5">
@@ -48,13 +48,19 @@ export default function RequestCard({ request, onJoin }) {
           </div>
           {/* You can't join your own request, so show a note instead of the button */}
           {request.mine ? (
-            <div className="w-full rounded-full bg-warm p-3 text-center text-[13px] font-bold text-muted">
-              Waiting for applicants
-            </div>
+            <Link
+              to={"/groups/" + request.id + "/applicants"}
+              className="w-full rounded-full bg-navy p-3 text-center text-[13px] font-bold text-white hover:bg-navy-dark"
+            >
+              See applicants
+            </Link>
           ) : request.sent ? (
-            <div className="w-full rounded-full bg-warm p-3 text-center text-[13px] font-bold text-muted">
-              Request sent
-            </div>
+            <Link
+              to={"/groups/" + request.id}
+              className="w-full rounded-full bg-warm p-3 text-center text-[13px] font-bold text-muted hover:bg-sand"
+            >
+              Request sent · view
+            </Link>
           ) : (
             <button
               onClick={onJoin}
@@ -84,73 +90,5 @@ export default function RequestCard({ request, onJoin }) {
         )}
       </div>
     </article>
-=======
-import { Link } from "react-router-dom";
-import Avatar from "../ui/Avatar";
-import Button from "../ui/Button";
-import CourseTag from "../ui/CourseTag";
-import Diamond from "../ui/Diamond";
-import Panel from "../ui/Panel";
-import "./RequestCard.css";
-
-function Seats({ left, size }) {
-  return (
-    <div className="sm-seats">
-      <div className="sm-seats__count">{left}</div>
-      <div className="sm-seats__label">{left === 1 ? "Seat left" : "Seats left"}</div>
-      <div className="sm-seats__dots">
-        {Array.from({ length: size }).map((_, i) => (
-          <span key={i} className={i < size - left ? "is-taken" : ""} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export default function RequestCard({ request, onJoin }) {
-  const { code, match, featured, title, description, facts, seatsLeft, size, owner } = request;
-
-  return (
-    <Panel as="article" accent={featured} raised={featured} className="sm-request">
-      <div className="sm-request__top">
-        <div className="sm-request__body">
-          <div className="sm-request__tags">
-            <CourseTag tone={featured ? "navy" : "warm"}>{code}</CourseTag>
-            <span className={`sm-request__match ${featured ? "is-high" : ""}`}>{match}% match</span>
-          </div>
-          <h3 className="sm-request__title">{title}</h3>
-          <p className="sm-request__desc">{description}</p>
-          <div className="sm-request__facts">
-            {facts.map((fact) => (
-              <span className="sm-request__fact" key={fact}>
-                <Diamond size={7} />
-                {fact}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="sm-request__side">
-          <Seats left={seatsLeft} size={size} />
-          <Button
-            variant={featured ? "primary" : "secondary"}
-            block
-            onClick={() => onJoin?.(request)}
-          >
-            Request to join
-          </Button>
-        </div>
-      </div>
-
-      <div className="sm-request__owner">
-        <Avatar initials={owner.initials} size={30} tone="light" />
-        <Link to="/profile" className="sm-request__name">{owner.name}</Link>
-        <span className="sm-request__faculty">{owner.faculty}</span>
-        <span className="sm-request__rating">
-          <Diamond size={7} />
-          {owner.rating} social rating
-        </span>
-      </div>
-    </Panel>
->>>>>>> origin/main
   );
 }

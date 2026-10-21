@@ -8,7 +8,7 @@ export default function BrowseTitle({ count }) {
     <div className="mb-5 flex items-end justify-between">
       <div>
         <Label className="mb-2">Open requests · Today</Label>
-        <h2 className="text-[26px] font-semibold">{count} groups forming on campus</h2>
+        <h2 className="text-[26px] font-semibold">{count} {count === 1 ? "group" : "groups"} forming on campus</h2>
       </div>
       <div className="flex gap-2 text-xs">
         <button
