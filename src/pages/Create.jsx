@@ -7,6 +7,8 @@ import DescriptionField from "../components/create/DescriptionField.jsx";
 import PlacePicker from "../components/create/PlacePicker.jsx";
 import WhenFields from "../components/create/WhenFields.jsx";
 import PreferenceChips from "../components/create/PreferenceChips.jsx";
+import FieldLabel from "../components/create/FieldLabel.jsx";
+import Select from "../components/create/Select.jsx";
 import PreviewSidebar from "../components/create/PreviewSidebar.jsx";
 import { createGroup, getUser, initialsOf, toEnum } from "../api.js";
 
@@ -24,6 +26,8 @@ const places = [
   { name: "Canteen", note: "Talk freely, coffee nearby" },
   { name: "Top floor", note: "Study pods, whiteboards" },
 ];
+
+const levels = ["Beginner", "Intermediate", "Advanced"];
 
 const days = ["Today", "Tomorrow", "Day after tomorrow"];
 
@@ -55,6 +59,7 @@ export default function Create() {
   const [day, setDay] = useState(days[0]);
   const [time, setTime] = useState(times[2]);
   const [groupSize, setGroupSize] = useState(4);
+  const [level, setLevel] = useState(levels[1]);
   const [chosenPreferences, setChosenPreferences] = useState(["Quiet work"]);
   const [error, setError] = useState("");
 
@@ -96,6 +101,7 @@ export default function Create() {
       meetingDate: dateInDays(days.indexOf(day)),
       startTime: startTime,
       endTime: endTime,
+      level: toEnum(level),
       preferences: chosenPreferences.map(toEnum),
       groupSize: groupSize,
     })
@@ -146,6 +152,11 @@ export default function Create() {
               groupSize={groupSize}
               setGroupSize={setGroupSize}
             />
+
+            <label className="block max-w-xs">
+              <FieldLabel>Your level in this subject</FieldLabel>
+              <Select value={level} onChange={setLevel} options={levels} />
+            </label>
 
             <PreferenceChips
               preferences={preferences}
