@@ -21,7 +21,6 @@ button { font-family: inherit; }
 
 h1, h2, h3, h4, p { margin: 0; }
 
-/* Shared utilities used across screens */
 .sm-eyebrow {
   font: 700 10px/1 var(--sm-sans);
   letter-spacing: 0.18em;
@@ -43,7 +42,6 @@ h1, h2, h3, h4, p { margin: 0; }
   flex-direction: column;
 }
 
-/* The screen body grows to fill the laptop viewport */
 .sm-screen > *:last-child { flex: 1; }
 
 .sm-shell {

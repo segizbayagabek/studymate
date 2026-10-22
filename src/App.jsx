@@ -18,7 +18,6 @@ export default function App() {
       <Route path="/groups/:groupId/applicants" element={<Applicants />} />
       <Route path="/requested" element={<Requested />} />
 
-      {/* Any other address (pages we haven't built yet) goes back to Browse */}
       <Route path="*" element={<Navigate to="/browse" />} />
     </Routes>
   );

@@ -4,22 +4,13 @@ import crest from "../../assets/sdu-crest.png";
 import Label from "../common/Label.jsx";
 import { login, saveUser } from "../../api.js";
 
-// The last 3 digits of a student ID are the order you enrolled in.
-// No major takes more students than this in one year.
 const biggestOrderNumber = 500;
 
-// A student ID looks like 250118021:
-//   25  = year you enrolled (2025)
-//   01  = faculty
-//   18  = major
-//   021 = your number in the enrolment list
-// Returns an error message, or "" if the ID looks real.
 function checkStudentId(id) {
   if (id === "") {
     return "Enter your student ID.";
   }
 
-  // /^[0-9]{9}$/ means "exactly 9 digits, nothing else"
   if (!/^[0-9]{9}$/.test(id)) {
     return "Your SDU email is your 9-digit student ID, e.g. 250118021@sdu.edu.kz";
   }
@@ -29,8 +20,7 @@ function checkStudentId(id) {
   const major = id.slice(4, 6);
   const order = Number(id.slice(6, 9));
 
-  // Only students who enrolled in the last 8 years can still be studying
-  const thisYear = new Date().getFullYear() % 100; // 2026 -> 26
+  const thisYear = new Date().getFullYear() % 100;
   const oldestYear = thisYear - 8;
   if (year < oldestYear || year > thisYear) {
     return "The first two digits should be the year you enrolled (" + oldestYear + "–" + thisYear + ").";
@@ -59,7 +49,6 @@ export default function LoginForm() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // If someone types the whole email, keep only the part before @sdu.edu.kz
     const id = username.trim().replace("@sdu.edu.kz", "");
     const idError = checkStudentId(id);
     const passError = password === "" ? "Enter your password." : "";
@@ -82,7 +71,6 @@ export default function LoginForm() {
   return (
     <div className="flex items-center justify-center px-6 py-12">
       <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col gap-7">
-        {/* Small logo, only on small screens where the navy half is hidden */}
         <div className="flex items-center gap-3 lg:hidden">
           <img src={crest} alt="SDU University" className="h-8" />
           <span className="font-serif text-xl font-medium">Study Mate</span>
@@ -132,7 +120,6 @@ export default function LoginForm() {
           </label>
 
           <div className="flex items-center justify-between text-xs font-semibold">
-            {/* type="button" so clicking it doesn't submit the form */}
             <button type="button" onClick={() => setKeepSignedIn(!keepSignedIn)} className="flex items-center gap-2 text-ink">
               <span
                 className={

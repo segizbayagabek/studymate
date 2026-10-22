@@ -1,10 +1,5 @@
 import "./Panel.css";
 
-/**
- * The one card used everywhere.
- * tone: "paper" | "warm" | "navy" | "dashed"
- * accent: adds the peach left rule used on featured cards
- */
 export default function Panel({
   tone = "paper",
   accent = false,

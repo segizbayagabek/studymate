@@ -136,7 +136,6 @@ public class StudyGroupServiceImpl implements StudyGroupService {
         }
         group.cancel();
 
-        // Applicants waiting for a decision get a final answer
         requestRepository.findByGroupIdOrderByScoreDescCreatedAtAsc(groupId).stream()
                 .filter(request -> request.getStatus() == JoinRequestStatus.PENDING)
                 .forEach(JoinRequest::reject);

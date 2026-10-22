@@ -24,7 +24,6 @@ public class StudyGroupController {
         this.groupService = groupService;
     }
 
-    // Open groups for the browse page. Exact spot is never included here.
     @GetMapping("/groups")
     public List<StudyGroupResponse> searchGroups(
             @RequestParam(required = false) String courseCode,
@@ -45,13 +44,11 @@ public class StudyGroupController {
         return groupService.createGroup(userId, request);
     }
 
-    // Groups the user organizes
     @GetMapping("/users/{userId}/groups")
     public List<StudyGroupResponse> getOrganizedGroups(@PathVariable Long userId) {
         return groupService.getOrganizedGroups(userId);
     }
 
-    // Group details as seen by this user: exact spot only for the organizer and accepted members
     @GetMapping("/users/{userId}/groups/{groupId}")
     public StudyGroupResponse getGroup(
             @PathVariable Long userId,

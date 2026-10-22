@@ -1,6 +1,5 @@
 import "./Meter.css";
 
-/** A labelled score bar. Used in applicant breakdowns and the rating card. */
 export default function Meter({ label, value, max = 100, accent = false, onNavy = false, displayValue }) {
   const pct = Math.max(0, Math.min(100, (value / max) * 100));
   return (

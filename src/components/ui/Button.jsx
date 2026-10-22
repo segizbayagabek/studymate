@@ -1,9 +1,5 @@
 import "./Button.css";
 
-/**
- * variant: "primary" | "secondary" | "peach" | "ghostOnNavy" | "quiet"
- * size:    "md" | "sm" | "lg"
- */
 export default function Button({
   variant = "primary",
   size = "md",

@@ -7,6 +7,10 @@ export function saveUser(user) {
   localStorage.setItem("user", JSON.stringify(user));
 }
 
+export function logout() {
+  localStorage.removeItem("user");
+}
+
 async function request(method, url, body) {
   const response = await fetch(url, {
     method: method,

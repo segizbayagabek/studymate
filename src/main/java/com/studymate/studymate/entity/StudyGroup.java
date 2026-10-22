@@ -42,7 +42,6 @@ public class StudyGroup {
     @Column(nullable = false)
     private StudyPlace place;
 
-    // Visible only to the organizer and accepted members
     private String exactSpot;
 
     @Column(nullable = false)
@@ -64,11 +63,9 @@ public class StudyGroup {
     @Column(name = "preference", nullable = false)
     private Set<StudyPreference> preferences = new HashSet<>();
 
-    // Total size including the organizer
     @Column(nullable = false)
     private int groupSize;
 
-    // Accepted members, organizer not included
     @Column(nullable = false)
     private int memberCount;
 
@@ -79,7 +76,6 @@ public class StudyGroup {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
-    // Guards against two concurrent accepts taking the last seat
     @Version
     private Long version;
 

@@ -1,5 +1,3 @@
-// The study requests the app starts with.
-// App.jsx keeps them in state, so new ones from the Create page get added to this list.
 export const startingRequests = [
   {
     id: 1,
@@ -13,7 +11,7 @@ export const startingRequests = [
     seatsLeft: 2,
     groupSize: 4,
     owner: { initials: "DS", name: "Dana S.", faculty: "Engineering & Natural Sciences · Year 2", rating: 4.8 },
-    highlight: true, // the best match gets the peach stripe
+    highlight: true,
   },
   {
     id: 2,

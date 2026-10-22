@@ -21,7 +21,6 @@ export default function RequestCard({ request, onJoin }) {
       }
     >
       <div className="flex justify-between gap-5">
-        {/* Left: course, title, description, details */}
         <div>
           <div className="mb-2 flex items-center gap-2">
             <CourseTag code={request.code} dark={request.highlight} />
@@ -46,7 +45,6 @@ export default function RequestCard({ request, onJoin }) {
             </div>
             <div className="mt-2 flex justify-end gap-1">{dots}</div>
           </div>
-          {/* You can't join your own request, so show a note instead of the button */}
           {request.mine ? (
             <Link
               to={"/groups/" + request.id + "/applicants"}
@@ -75,7 +73,6 @@ export default function RequestCard({ request, onJoin }) {
         </div>
       </div>
 
-      {/* Bottom: who posted it */}
       <div className="mt-4.5 flex items-center gap-2.5 border-t border-navy/10 pt-4 text-[12.5px]">
         <div className="flex size-7.5 items-center justify-center rounded-full border border-navy/10 bg-warm text-[11px] font-bold">
           {request.owner.initials}

@@ -10,7 +10,6 @@ const pickedForYou = [
 export default function Sidebar() {
   return (
     <aside className="flex flex-col gap-4.5 bg-warm px-6 py-8">
-      {/* Your week */}
       <div className="rounded-2xl bg-navy p-5.5">
         <Label onDark className="mb-3">Your week</Label>
         <div className="flex items-baseline gap-2">

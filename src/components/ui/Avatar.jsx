@@ -1,6 +1,5 @@
 import "./Avatar.css";
 
-/** tone: "navy" | "light" */
 export default function Avatar({ initials, size = 34, tone = "navy", className = "" }) {
   return (
     <span

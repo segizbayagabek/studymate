@@ -1,6 +1,5 @@
 import "./SplitPage.css";
 
-/** Main column + warm sidebar, collapsing to one column on tablet. */
 export default function SplitPage({ children, aside, asideWidth = 316, reverse = false }) {
   return (
     <div

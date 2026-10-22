@@ -30,7 +30,6 @@ public class JoinRequestController {
         return requestService.apply(userId, groupId, request);
     }
 
-    // Applicants of the organizer's group, best match first
     @GetMapping("/groups/{groupId}/requests")
     public List<JoinRequestResponse> getGroupRequests(
             @PathVariable Long userId,
@@ -39,7 +38,6 @@ public class JoinRequestController {
         return requestService.getGroupRequests(userId, groupId);
     }
 
-    // Requests the user has sent, with their status
     @GetMapping("/requests")
     public List<JoinRequestResponse> getMyRequests(@PathVariable Long userId) {
         return requestService.getMyRequests(userId);

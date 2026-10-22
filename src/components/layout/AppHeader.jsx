@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { navItems, languages } from "../../data/navigation";
-import Avatar from "../ui/Avatar";
+import AccountMenu from "../common/AccountMenu.jsx";
 import crest from "../../assets/sdu-crest.png";
 import "./AppHeader.css";
 
-export default function AppHeader({ user = { initials: "AT" } }) {
+export default function AppHeader() {
   const [lang, setLang] = useState("EN");
   return (
     <header className="sm-header">
@@ -40,7 +40,7 @@ export default function AppHeader({ user = { initials: "AT" } }) {
             </button>
           ))}
         </div>
-        <Avatar initials={user.initials} size={34} />
+        <AccountMenu />
       </div>
     </header>
   );
