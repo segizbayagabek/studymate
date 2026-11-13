@@ -11,6 +11,7 @@ import FieldLabel from "../components/create/FieldLabel.jsx";
 import Select from "../components/create/Select.jsx";
 import PreviewSidebar from "../components/create/PreviewSidebar.jsx";
 import { createGroup, dayLabel, getUser, initialsOf, timeRange, toEnum } from "../api.js";
+import { useI18n } from "../i18n.js";
 
 const places = [
   { name: "Library", note: "Quiet floors, group rooms" },
@@ -30,6 +31,7 @@ function todayDate() {
 }
 
 export default function Create() {
+  const { t } = useI18n();
   const user = getUser();
   const me = user
     ? { initials: initialsOf(user.name), name: user.name, faculty: "SDU University" }
@@ -53,12 +55,12 @@ export default function Create() {
 
   const request = {
     code: code,
-    title: (subject || "Subject") + " — " + (title || "your title here"),
+    title: (subject ? t(subject) : t("Subject")) + " — " + (title || t("your title here")),
     description: description,
-    place: place,
+    place: t(place),
     exactSpot: exactSpot,
-    time: meetingDate && startTime && endTime ? dayLabel(meetingDate) + ", " + timeRange(startTime, endTime) : "Pick a day and time",
-    style: chosenPreferences.length > 0 ? chosenPreferences.join(" · ") : "No preferences",
+    time: meetingDate && startTime && endTime ? dayLabel(meetingDate) + ", " + timeRange(startTime, endTime) : t("Pick a day and time"),
+    style: chosenPreferences.length > 0 ? chosenPreferences.map(t).join(" · ") : t("No preferences"),
     seatsLeft: groupSize - 1,
     groupSize: groupSize,
     owner: me,
@@ -70,17 +72,17 @@ export default function Create() {
     e.preventDefault();
 
     if (subject.trim() === "" || code.trim() === "" || title.trim() === "" || description.trim() === "") {
-      setError("Please fill in the subject, course code, a short title and what you'll do together.");
+      setError(t("Please fill in the subject, course code, a short title and what you'll do together."));
       return;
     }
 
     if (meetingDate === "" || meetingDate < todayDate()) {
-      setError("Please pick today or a later day.");
+      setError(t("Please pick today or a later day."));
       return;
     }
 
     if (startTime === "" || endTime === "" || endTime <= startTime) {
-      setError("The meeting has to end after it starts.");
+      setError(t("The meeting has to end after it starts."));
       return;
     }
 
@@ -147,7 +149,7 @@ export default function Create() {
             />
 
             <label className="block max-w-xs">
-              <FieldLabel>Your level in this subject</FieldLabel>
+              <FieldLabel>{t("Your level in this subject")}</FieldLabel>
               <Select value={level} onChange={setLevel} options={levels} />
             </label>
 
@@ -160,7 +162,7 @@ export default function Create() {
             {error && <p className="text-[13px] font-semibold text-red-600">{error}</p>}
 
             <button type="submit" className="w-fit rounded-full bg-navy px-10 py-4 text-sm font-bold text-white hover:bg-navy-dark">
-              Post request
+              {t("Publish study request")}
             </button>
           </form>
         </main>

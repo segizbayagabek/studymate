@@ -1,3 +1,5 @@
+import { useI18n } from "../../i18n.js";
+
 const tiers = {
   strong: { label: "Strong match", box: "size-26 bg-peach", text: "text-peach-dark" },
   good: { label: "Good match", box: "size-26 bg-peach-light", text: "text-muted" },
@@ -5,6 +7,7 @@ const tiers = {
 };
 
 export default function ScoreDiamond({ score }) {
+  const { t } = useI18n();
   const tier = score >= 85 ? tiers.strong : score >= 70 ? tiers.good : tiers.low;
 
   return (
@@ -16,7 +19,7 @@ export default function ScoreDiamond({ score }) {
         </span>
       </div>
       {tier.label && (
-        <span className={"text-[10.5px] font-bold uppercase tracking-[0.16em] " + tier.text}>{tier.label}</span>
+        <span className={"text-[10.5px] font-bold uppercase tracking-[0.16em] " + tier.text}>{t(tier.label)}</span>
       )}
     </div>
   );

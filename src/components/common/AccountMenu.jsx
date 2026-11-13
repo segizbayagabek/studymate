@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser, initialsOf, logout } from "../../api.js";
+import { useI18n } from "../../i18n.js";
 
 export default function AccountMenu() {
+  const { t } = useI18n();
   const user = getUser();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
@@ -41,7 +43,7 @@ export default function AccountMenu() {
             onClick={handleLogout}
             className="w-full rounded-lg px-3 py-2 text-left text-[13px] font-semibold text-navy hover:bg-warm"
           >
-            Log out
+            {t("Log out")}
           </button>
         </div>
       )}

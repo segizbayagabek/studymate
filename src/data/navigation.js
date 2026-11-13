@@ -2,6 +2,7 @@ export const navItems = [
   { to: "/browse", label: "Browse" },
   { to: "/create", label: "Create" },
   { to: "/groups", label: "My groups" },
+  { to: "/chat", label: "Chat" },
   { to: "/profile", label: "Profile" },
 ];
 

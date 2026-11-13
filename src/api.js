@@ -1,3 +1,5 @@
+import { getLang, tr } from "./i18n.js";
+
 export function getUser() {
   const saved = localStorage.getItem("user");
   return saved ? JSON.parse(saved) : null;
@@ -21,12 +23,12 @@ async function request(method, url, body) {
   const data = await response.json().catch(() => null);
 
   if (response.status === 401) {
-    throw new Error("Wrong student ID or password.");
+    throw new Error(tr("Wrong student ID or password."));
   }
 
   if (!response.ok) {
     const fieldErrors = data && data.errors ? Object.values(data.errors).join(", ") : "";
-    throw new Error(fieldErrors || (data && data.detail) || "Something went wrong. Try again.");
+    throw new Error(fieldErrors || (data && data.detail) || tr("Something went wrong. Try again."));
   }
 
   return data;
@@ -105,9 +107,10 @@ export function dayLabel(date) {
   const meeting = new Date(date + "T00:00:00");
   const daysAway = Math.round((meeting - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
 
-  if (daysAway === 0) return "Today";
-  if (daysAway === 1) return "Tomorrow";
-  return meeting.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  if (daysAway === 0) return tr("Today");
+  if (daysAway === 1) return tr("Tomorrow");
+  const locale = getLang() === "RU" ? "ru-RU" : getLang() === "KZ" ? "kk-KZ" : "en-GB";
+  return meeting.toLocaleDateString(locale, { day: "numeric", month: "short" });
 }
 
 export function timeRange(from, to) {

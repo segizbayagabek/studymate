@@ -1,3 +1,5 @@
+import { useI18n } from "../../i18n.js";
+
 const opposites = {
   "Quiet work": "Talkative",
   "Talkative": "Quiet work",
@@ -6,6 +8,8 @@ const opposites = {
 };
 
 export default function PreferenceChips({ preferences, chosen, setChosen }) {
+  const { t } = useI18n();
+
   function toggle(preference) {
     if (chosen.includes(preference)) {
       setChosen(chosen.filter((p) => p !== preference));
@@ -18,7 +22,7 @@ export default function PreferenceChips({ preferences, chosen, setChosen }) {
   return (
     <div>
       <div className="mb-3 text-[13px] font-semibold text-ink">
-        Preferences <span className="font-medium text-muted">— optional, used for matching</span>
+        {t("Preferences")} <span className="font-medium text-muted">{t("— optional, used for matching")}</span>
       </div>
 
       <div className="flex flex-wrap gap-2.5">
@@ -34,7 +38,7 @@ export default function PreferenceChips({ preferences, chosen, setChosen }) {
                 : "border border-navy/10 bg-warm text-ink hover:border-navy/30")
             }
           >
-            {preference}
+            {t(preference)}
           </button>
         ))}
       </div>

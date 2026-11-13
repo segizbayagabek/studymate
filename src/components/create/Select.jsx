@@ -1,4 +1,7 @@
+import { useI18n } from "../../i18n.js";
+
 export default function Select({ value, onChange, options }) {
+  const { t } = useI18n();
   return (
     <div className="relative">
       <select
@@ -8,7 +11,7 @@ export default function Select({ value, onChange, options }) {
       >
         {options.map((option) => (
           <option key={option} value={option}>
-            {option}
+            {t(option)}
           </option>
         ))}
       </select>

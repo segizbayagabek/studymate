@@ -3,16 +3,17 @@ import { useNavigate } from "react-router-dom";
 import crest from "../../assets/sdu-crest.png";
 import Label from "../common/Label.jsx";
 import { login, saveUser } from "../../api.js";
+import { languages, useI18n } from "../../i18n.js";
 
 const biggestOrderNumber = 500;
 
-function checkStudentId(id) {
+function checkStudentId(id, t) {
   if (id === "") {
-    return "Enter your student ID.";
+    return t("Enter your student ID.");
   }
 
   if (!/^[0-9]{9}$/.test(id)) {
-    return "Your SDU email is your 9-digit student ID, e.g. 250118021@sdu.edu.kz";
+    return t("Your SDU email is your 9-digit student ID, e.g. 250118021@sdu.edu.kz");
   }
 
   const year = Number(id.slice(0, 2));
@@ -27,7 +28,7 @@ function checkStudentId(id) {
   }
 
   if (faculty === "00" || major === "00") {
-    return "This student ID doesn't look right. Check the faculty and major digits.";
+    return t("This student ID doesn't look right. Check the faculty and major digits.");
   }
 
   if (order < 1 || order > biggestOrderNumber) {
@@ -38,6 +39,7 @@ function checkStudentId(id) {
 }
 
 export default function LoginForm() {
+  const { lang, setLang, t } = useI18n();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [keepSignedIn, setKeepSignedIn] = useState(true);
@@ -50,8 +52,8 @@ export default function LoginForm() {
     e.preventDefault();
 
     const id = username.trim().replace("@sdu.edu.kz", "");
-    const idError = checkStudentId(id);
-    const passError = password === "" ? "Enter your password." : "";
+    const idError = checkStudentId(id, t);
+    const passError = password === "" ? t("Enter your password.") : "";
 
     setUsernameError(idError);
     setPasswordError(passError);
@@ -69,7 +71,24 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="flex items-center justify-center px-6 py-12">
+    <div className="relative flex items-center justify-center px-6 py-12">
+      <div className="absolute top-6 right-8 flex gap-0.5 rounded-full bg-peach p-0.75 text-[11px] font-bold" role="group" aria-label="Language">
+        {languages.map((code) => (
+          <button
+            key={code}
+            type="button"
+            onClick={() => setLang(code)}
+            className={
+              code === lang
+                ? "cursor-pointer rounded-full bg-paper px-2.5 py-1 text-navy"
+                : "cursor-pointer rounded-full px-2.5 py-1 text-[#5A3418] hover:text-navy"
+            }
+          >
+            {code}
+          </button>
+        ))}
+      </div>
+
       <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col gap-7">
         <div className="flex items-center gap-3 lg:hidden">
           <img src={crest} alt="SDU University" className="h-8" />
@@ -77,16 +96,16 @@ export default function LoginForm() {
         </div>
 
         <div>
-          <Label className="mb-3">Student access</Label>
-          <h1 className="mb-2 text-[28px] font-semibold">Welcome back</h1>
+          <Label className="mb-3">{t("Student access")}</Label>
+          <h1 className="mb-2 text-[28px] font-semibold">{t("Welcome back")}</h1>
           <p className="text-sm font-medium text-muted">
-            Log in with the university account you got when you enrolled at SDU.
+            {t("Log in with the university account you got when you enrolled at SDU.")}
           </p>
         </div>
 
         <div className="flex flex-col gap-4">
           <label>
-            <span className="mb-2 block text-xs font-semibold text-ink">SDU email</span>
+            <span className="mb-2 block text-xs font-semibold text-ink">{t("SDU email")}</span>
             <div
               className={
                 "flex items-center rounded-xl border bg-warm px-4 focus-within:border-navy/40 " +
@@ -106,7 +125,7 @@ export default function LoginForm() {
           </label>
 
           <label>
-            <span className="mb-2 block text-xs font-semibold text-ink">Password</span>
+            <span className="mb-2 block text-xs font-semibold text-ink">{t("Password")}</span>
             <input
               type="password"
               value={password}
@@ -129,18 +148,18 @@ export default function LoginForm() {
               >
                 {keepSignedIn ? "✓" : ""}
               </span>
-              Keep me signed in
+              {t("Keep me signed in")}
             </button>
-            <a href="#" className="text-peach-dark hover:underline">Forgot password?</a>
+            <a href="#" className="text-peach-dark hover:underline">{t("Forgot password?")}</a>
           </div>
         </div>
 
         <button type="submit" className="rounded-full bg-navy p-4 text-sm font-bold text-white hover:bg-navy-dark">
-          Log in with SDU account
+          {t("Log in with SDU account")}
         </button>
 
         <p className="text-[11.5px] font-medium leading-relaxed text-muted">
-          Provided by SDU University · Student Affairs. By continuing you accept the campus community rules.
+          {t("Provided by SDU University · Student Affairs. By continuing you accept the campus community rules.")}
         </p>
       </form>
     </div>

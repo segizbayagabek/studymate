@@ -1,16 +1,20 @@
 import { Link } from "react-router-dom";
 import crest from "../../assets/sdu-crest.png";
 import AccountMenu from "./AccountMenu.jsx";
+import { languages, useI18n } from "../../i18n.js";
 
 const links = [
   { label: "Browse", to: "/browse" },
   { label: "Create", to: "/create" },
   { label: "My groups", to: "/groups" },
   { label: "Requested", to: "/requested" },
+  { label: "Chat", to: "/chat" },
   { label: "Profile", to: "/profile" },
 ];
 
 export default function Navbar({ active }) {
+  const { lang, setLang, t } = useI18n();
+
   return (
     <header className="flex items-center justify-between gap-6 border-b border-navy/10 px-7 py-4">
       <div className="flex items-center gap-3">
@@ -30,16 +34,27 @@ export default function Navbar({ active }) {
                 : "rounded-full px-4.5 py-2 text-[12.5px] font-semibold text-white/70 hover:text-white"
             }
           >
-            {link.label}
+            {t(link.label)}
           </Link>
         ))}
       </nav>
 
       <div className="flex items-center gap-3">
-        <div className="flex gap-0.5 rounded-full bg-peach p-0.75 text-[11px] font-bold">
-          <span className="rounded-full px-2.5 py-1 text-[#5A3418]">KZ</span>
-          <span className="rounded-full px-2.5 py-1 text-[#5A3418]">RU</span>
-          <span className="rounded-full bg-paper px-2.5 py-1 text-navy">EN</span>
+        <div className="flex gap-0.5 rounded-full bg-peach p-0.75 text-[11px] font-bold" role="group" aria-label="Language">
+          {languages.map((code) => (
+            <button
+              key={code}
+              type="button"
+              onClick={() => setLang(code)}
+              className={
+                code === lang
+                  ? "cursor-pointer rounded-full bg-paper px-2.5 py-1 text-navy"
+                  : "cursor-pointer rounded-full px-2.5 py-1 text-[#5A3418] hover:text-navy"
+              }
+            >
+              {code}
+            </button>
+          ))}
         </div>
         <AccountMenu />
       </div>

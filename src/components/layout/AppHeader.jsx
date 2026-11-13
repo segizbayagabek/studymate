@@ -1,12 +1,13 @@
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { navItems, languages } from "../../data/navigation";
+import { useI18n } from "../../i18n.js";
 import AccountMenu from "../common/AccountMenu.jsx";
 import crest from "../../assets/sdu-crest.png";
 import "./AppHeader.css";
 
 export default function AppHeader() {
-  const [lang, setLang] = useState("EN");
+  const { lang, setLang, t } = useI18n();
+
   return (
     <header className="sm-header">
       <div className="sm-header__brand">
@@ -22,7 +23,7 @@ export default function AppHeader() {
             to={item.to}
             className={({ isActive }) => `sm-nav__link ${isActive ? "is-active" : ""}`}
           >
-            {item.label}
+            {t(item.label)}
           </NavLink>
         ))}
       </nav>

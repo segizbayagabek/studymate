@@ -1,12 +1,21 @@
 import CourseTag from "../common/CourseTag.jsx";
 import Diamond from "../common/Diamond.jsx";
 import Label from "../common/Label.jsx";
+import { useI18n } from "../../i18n.js";
+
+function seatsLeftText(seatsLeft, lang) {
+  if (lang === "RU") return seatsLeft + " " + (seatsLeft === 1 ? "место осталось" : "мест осталось");
+  if (lang === "KZ") return seatsLeft + " орын қалды";
+  return seatsLeft + " " + (seatsLeft === 1 ? "seat" : "seats") + " left";
+}
 
 export default function PreviewSidebar({ request }) {
+  const { lang, t } = useI18n();
+
   return (
     <aside className="flex flex-col gap-6 bg-warm px-7 py-10">
       <div>
-        <Label className="mb-4">Live preview</Label>
+        <Label className="mb-4">{t("Live preview")}</Label>
 
         <div className="rounded-l-md rounded-r-2xl border border-l-[3px] border-navy/10 border-l-peach bg-paper p-6">
           <CourseTag code={request.code || "CODE"} dark />
@@ -17,7 +26,7 @@ export default function PreviewSidebar({ request }) {
             <span className="flex items-center gap-2"><Diamond />{request.time}</span>
             <span className="flex items-center gap-2">
               <Diamond />
-              {request.seatsLeft} {request.seatsLeft === 1 ? "seat" : "seats"} left · {request.style}
+              {seatsLeftText(request.seatsLeft, lang)} · {request.style}
             </span>
           </div>
 
@@ -32,10 +41,9 @@ export default function PreviewSidebar({ request }) {
       </div>
 
       <div className="rounded-2xl bg-navy p-6">
-        <Label onDark className="mb-3">How matching works</Label>
+        <Label onDark className="mb-3">{t("How matching works")}</Label>
         <p className="text-[14px] leading-relaxed font-medium text-white/80">
-          We compare subject, time overlap, course level and preferences — never grades. You always see the
-          score before you accept anyone.
+          {t("We compare subject, time overlap, course level and preferences — never grades. You always see the score before you accept anyone.")}
         </p>
       </div>
     </aside>

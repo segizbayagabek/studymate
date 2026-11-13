@@ -1,10 +1,12 @@
 import Diamond from "../common/Diamond.jsx";
 import FieldLabel from "./FieldLabel.jsx";
+import { useI18n } from "../../i18n.js";
 
 export default function PlacePicker({ places, place, setPlace, exactSpot, setExactSpot }) {
+  const { t } = useI18n();
   return (
     <div>
-      <FieldLabel>Place on campus</FieldLabel>
+      <FieldLabel>{t("Place on campus")}</FieldLabel>
 
       <div className="grid grid-cols-3 gap-3">
         {places.map((p) => {
@@ -25,24 +27,24 @@ export default function PlacePicker({ places, place, setPlace, exactSpot, setExa
                   <span className="flex size-5.5 items-center justify-center rounded-full bg-navy text-[10px] text-peach">✓</span>
                 )}
               </div>
-              <div className="text-[17px] font-semibold">{p.name}</div>
-              <div className="text-[13px] font-medium text-muted">{p.note}</div>
+              <div className="text-[17px] font-semibold">{t(p.name)}</div>
+              <div className="text-[13px] font-medium text-muted">{t(p.note)}</div>
             </button>
           );
         })}
       </div>
 
       <div className="mt-3 flex items-center gap-4 rounded-xl bg-warm px-5 py-3.5">
-        <span className="text-[13px] font-semibold text-muted">Exact spot</span>
+        <span className="text-[13px] font-semibold text-muted">{t("Exact spot")}</span>
         <input
           value={exactSpot}
           onChange={(e) => setExactSpot(e.target.value)}
-          placeholder="2nd floor, table 14"
+          placeholder={t("2nd floor, table 14")}
           className="flex-1 bg-transparent text-[15px] font-medium outline-none placeholder:text-muted/60"
         />
         <span className="flex items-center gap-2 text-xs font-semibold text-peach-dark">
           <Diamond />
-          Shown to accepted members only
+          {t("Shown to accepted members only")}
         </span>
       </div>
     </div>

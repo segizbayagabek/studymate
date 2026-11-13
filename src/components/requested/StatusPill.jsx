@@ -1,4 +1,5 @@
 import { isPast } from "../../api.js";
+import { useI18n } from "../../i18n.js";
 
 const statuses = {
   PENDING: { text: "Waiting for the owner", colors: "bg-honey-light text-honey" },
@@ -15,12 +16,13 @@ function statusOf(request) {
 }
 
 export default function StatusPill({ request }) {
+  const { t } = useI18n();
   const status = statusOf(request);
 
   return (
     <span className={"flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold " + status.colors}>
       <span className="size-1.5 rounded-full bg-current"></span>
-      {status.text}
+      {t(status.text)}
     </span>
   );
 }
