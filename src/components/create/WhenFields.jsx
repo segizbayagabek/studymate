@@ -1,11 +1,23 @@
 import FieldLabel from "./FieldLabel.jsx";
-import Select from "./Select.jsx";
 import { useI18n } from "../../i18n.js";
 
 const smallestGroup = 2;
 const biggestGroup = 8;
 
-export default function WhenFields({ days, day, setDay, times, time, setTime, groupSize, setGroupSize }) {
+const inputClass =
+  "w-full rounded-xl border border-navy/10 bg-warm px-4 py-3.5 text-[15px] font-medium outline-none focus:border-navy/40";
+
+export default function WhenFields({
+  minDate,
+  meetingDate,
+  setMeetingDate,
+  startTime,
+  setStartTime,
+  endTime,
+  setEndTime,
+  groupSize,
+  setGroupSize,
+}) {
   const { lang, t } = useI18n();
 
   function makeSmaller() {
@@ -22,13 +34,35 @@ export default function WhenFields({ days, day, setDay, times, time, setTime, gr
     <div className="grid grid-cols-3 gap-5">
       <label>
         <FieldLabel>{t("Day")}</FieldLabel>
-        <Select value={day} onChange={setDay} options={days} />
+        <input
+          type="date"
+          value={meetingDate}
+          min={minDate}
+          onChange={(e) => setMeetingDate(e.target.value)}
+          className={inputClass}
+        />
       </label>
 
-      <label>
+      <div>
         <FieldLabel>{t("Time")}</FieldLabel>
-        <Select value={time} onChange={setTime} options={times} />
-      </label>
+        <div className="flex items-center gap-2">
+          <input
+            type="time"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+            aria-label="Start time"
+            className={inputClass}
+          />
+          <span className="text-muted">–</span>
+          <input
+            type="time"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+            aria-label="End time"
+            className={inputClass}
+          />
+        </div>
+      </div>
 
       <div>
         <FieldLabel>{t("Group size")}</FieldLabel>

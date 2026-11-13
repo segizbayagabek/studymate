@@ -1,6 +1,5 @@
 import "./Diamond.css";
 
-/** The peach rotated-square bullet used across every screen. */
 export default function Diamond({ size = 7, tone = "peach", className = "", style }) {
   return (
     <span

@@ -31,7 +31,6 @@ public class CompatibilityService {
         );
     }
 
-    // Same course code: 100. Same department prefix (MATH 161 vs MATH 162): 50.
     int subjectScore(String groupCode, String applicantCode) {
         String a = normalize(groupCode);
         String b = normalize(applicantCode);
@@ -44,7 +43,6 @@ public class CompatibilityService {
         return !prefixA.isEmpty() && prefixA.equals(prefixB) ? 50 : 0;
     }
 
-    // Share of the meeting that fits into the applicant's free window.
     int timeScore(LocalTime start, LocalTime end, LocalTime from, LocalTime to) {
         long meeting = Duration.between(start, end).toMinutes();
         if (meeting <= 0) {
@@ -57,7 +55,6 @@ public class CompatibilityService {
         return (int) Math.round(overlap * 100.0 / meeting);
     }
 
-    // Same level: 100, one step apart: 50, two steps: 0. "Any level" groups accept everyone.
     int levelScore(StudyGroup group, KnowledgeLevel applicantLevel) {
         if (group.getPreferences().contains(StudyPreference.ANY_LEVEL)) {
             return 100;
@@ -66,12 +63,10 @@ public class CompatibilityService {
         return Math.max(0, 100 - gap * 50);
     }
 
-    // Share of the group's preferences the applicant also picked. No preferences means a full match.
     int preferenceScore(Set<StudyPreference> groupPrefs, Set<StudyPreference> applicantPrefs) {
         Set<StudyPreference> wanted = groupPrefs.isEmpty()
                 ? EnumSet.noneOf(StudyPreference.class)
                 : EnumSet.copyOf(groupPrefs);
-        // ANY_LEVEL is already used by the level part
         wanted.remove(StudyPreference.ANY_LEVEL);
 
         if (wanted.isEmpty()) {

@@ -23,7 +23,6 @@ export default function App() {
       <Route path="/chat/:groupId" element={<GroupChat />} />
       <Route path="/profile" element={<Profile />} />
 
-      {/* Any other address (pages we haven't built yet) goes back to Browse */}
       <Route path="*" element={<Navigate to="/browse" />} />
     </Routes>
   );

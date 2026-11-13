@@ -1,15 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { navItems, languages } from "../../data/navigation";
-import { getUser, initialsOf } from "../../api.js";
 import { useI18n } from "../../i18n.js";
-import Avatar from "../ui/Avatar";
+import AccountMenu from "../common/AccountMenu.jsx";
 import crest from "../../assets/sdu-crest.png";
 import "./AppHeader.css";
 
-export default function AppHeader({ user = { initials: "AT" } }) {
+export default function AppHeader() {
   const { lang, setLang, t } = useI18n();
-  const savedUser = getUser();
-  const initials = savedUser && savedUser.name ? initialsOf(savedUser.name) : user.initials;
 
   return (
     <header className="sm-header">
@@ -44,7 +41,7 @@ export default function AppHeader({ user = { initials: "AT" } }) {
             </button>
           ))}
         </div>
-        <Avatar initials={initials} size={34} />
+        <AccountMenu />
       </div>
     </header>
   );

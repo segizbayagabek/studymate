@@ -1,6 +1,5 @@
 import "./Field.css";
 
-/** Read-only styled form field used throughout the create flow. */
 export default function Field({ label, hint, children, caret = false }) {
   return (
     <label className="sm-field">

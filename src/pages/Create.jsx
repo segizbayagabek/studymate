@@ -10,17 +10,8 @@ import PreferenceChips from "../components/create/PreferenceChips.jsx";
 import FieldLabel from "../components/create/FieldLabel.jsx";
 import Select from "../components/create/Select.jsx";
 import PreviewSidebar from "../components/create/PreviewSidebar.jsx";
-import { createGroup, getUser, initialsOf, toEnum } from "../api.js";
+import { createGroup, dayLabel, getUser, initialsOf, timeRange, toEnum } from "../api.js";
 import { useI18n } from "../i18n.js";
-
-const subjects = [
-  { name: "Calculus II", code: "MATH 161" },
-  { name: "Discrete Math", code: "MATH 151" },
-  { name: "Data Structures", code: "CS 204" },
-  { name: "Mechanics", code: "PHYS 121" },
-  { name: "Academic English", code: "ENG 102" },
-  { name: "Kazakh History", code: "HIST 101" },
-];
 
 const places = [
   { name: "Library", note: "Quiet floors, group rooms" },
@@ -30,15 +21,10 @@ const places = [
 
 const levels = ["Beginner", "Intermediate", "Advanced"];
 
-const days = ["Today", "Tomorrow", "Day after tomorrow"];
-
-const times = ["09:00 – 11:00", "11:00 – 13:00", "14:00 – 16:00", "16:00 – 18:00", "18:00 – 20:00"];
-
 const preferences = ["Quiet work", "Talkative", "Mixed group", "Women only", "Men only", "Same year", "Any level"];
 
-function dateInDays(daysFromToday) {
+function todayDate() {
   const date = new Date();
-  date.setDate(date.getDate() + daysFromToday);
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return date.getFullYear() + "-" + month + "-" + day;
@@ -51,15 +37,15 @@ export default function Create() {
     ? { initials: initialsOf(user.name), name: user.name, faculty: "SDU University" }
     : { initials: "", name: "", faculty: "" };
 
-  // One piece of state for every field in the form
-  const [subject, setSubject] = useState(subjects[0].name);
-  const [code, setCode] = useState(subjects[0].code);
+  const [subject, setSubject] = useState("");
+  const [code, setCode] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [place, setPlace] = useState(places[0].name);
   const [exactSpot, setExactSpot] = useState("");
-  const [day, setDay] = useState(days[0]);
-  const [time, setTime] = useState(times[2]);
+  const [meetingDate, setMeetingDate] = useState(todayDate());
+  const [startTime, setStartTime] = useState("14:00");
+  const [endTime, setEndTime] = useState("16:00");
   const [groupSize, setGroupSize] = useState(4);
   const [level, setLevel] = useState(levels[1]);
   const [chosenPreferences, setChosenPreferences] = useState(["Quiet work"]);
@@ -67,16 +53,15 @@ export default function Create() {
 
   const navigate = useNavigate();
 
-  // The live preview on the right uses this, so it updates as you type.
   const request = {
     code: code,
-    title: t(subject) + " — " + (title || t("your title here")),
+    title: (subject ? t(subject) : t("Subject")) + " — " + (title || t("your title here")),
     description: description,
     place: t(place),
-    exactSpot: exactSpot, // only for accepted members, not shown on Browse
-    time: t(day) + ", " + time,
+    exactSpot: exactSpot,
+    time: meetingDate && startTime && endTime ? dayLabel(meetingDate) + ", " + timeRange(startTime, endTime) : t("Pick a day and time"),
     style: chosenPreferences.length > 0 ? chosenPreferences.map(t).join(" · ") : t("No preferences"),
-    seatsLeft: groupSize - 1, // you already take one seat
+    seatsLeft: groupSize - 1,
     groupSize: groupSize,
     owner: me,
     highlight: true,
@@ -86,21 +71,29 @@ export default function Create() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (code.trim() === "" || title.trim() === "" || description.trim() === "") {
-      setError(t("Please fill in the course code, a short title and what you'll do together."));
+    if (subject.trim() === "" || code.trim() === "" || title.trim() === "" || description.trim() === "") {
+      setError(t("Please fill in the subject, course code, a short title and what you'll do together."));
       return;
     }
 
-    const [startTime, endTime] = time.split(" – ");
+    if (meetingDate === "" || meetingDate < todayDate()) {
+      setError(t("Please pick today or a later day."));
+      return;
+    }
+
+    if (startTime === "" || endTime === "" || endTime <= startTime) {
+      setError(t("The meeting has to end after it starts."));
+      return;
+    }
 
     createGroup(user.id, {
       title: title.trim(),
       description: description.trim(),
-      subjectName: subject,
+      subjectName: subject.trim(),
       courseCode: code.trim(),
       place: toEnum(place),
       exactSpot: exactSpot.trim(),
-      meetingDate: dateInDays(days.indexOf(day)),
+      meetingDate: meetingDate,
       startTime: startTime,
       endTime: endTime,
       level: toEnum(level),
@@ -125,7 +118,6 @@ export default function Create() {
             <CreateTitle />
 
             <SubjectFields
-              subjects={subjects}
               subject={subject}
               setSubject={setSubject}
               code={code}
@@ -145,12 +137,13 @@ export default function Create() {
             />
 
             <WhenFields
-              days={days}
-              day={day}
-              setDay={setDay}
-              times={times}
-              time={time}
-              setTime={setTime}
+              minDate={todayDate()}
+              meetingDate={meetingDate}
+              setMeetingDate={setMeetingDate}
+              startTime={startTime}
+              setStartTime={setStartTime}
+              endTime={endTime}
+              setEndTime={setEndTime}
               groupSize={groupSize}
               setGroupSize={setGroupSize}
             />

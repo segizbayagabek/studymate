@@ -27,7 +27,6 @@
   color: var(--sm-navy);
 }
 
-/* stacked variant on the navy rating card */
 .sm-meter--onNavy { display: block; }
 .sm-meter--onNavy .sm-meter__head {
   display: flex;

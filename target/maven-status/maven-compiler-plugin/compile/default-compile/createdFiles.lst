@@ -2,10 +2,10 @@ com/studymate/studymate/dto/task/TaskUpdateRequest.class
 com/studymate/studymate/entity/JoinRequestStatus.class
 com/studymate/studymate/entity/GroupStatus.class
 com/studymate/studymate/dto/user/UserSummary.class
-com/studymate/studymate/controller/AuthController$LoginResponse.class
 com/studymate/studymate/dto/task/TaskResponse.class
 com/studymate/studymate/dto/group/StudyGroupResponse.class
 com/studymate/studymate/mapper/JoinRequestMapper.class
+com/studymate/studymate/dto/auth/LoginRequest.class
 com/studymate/studymate/repository/JoinRequestRepository.class
 com/studymate/studymate/controller/TaskController.class
 com/studymate/studymate/controller/UserController.class
@@ -46,5 +46,4 @@ com/studymate/studymate/entity/KnowledgeLevel.class
 com/studymate/studymate/exception/GlobalExceptionHandler.class
 com/studymate/studymate/dto/request/JoinRequestResponse.class
 com/studymate/studymate/entity/Course.class
-com/studymate/studymate/controller/AuthController$LoginRequest.class
 com/studymate/studymate/controller/CourseController.class

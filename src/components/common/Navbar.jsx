@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import crest from "../../assets/sdu-crest.png";
-import { getUser, initialsOf } from "../../api.js";
+import AccountMenu from "./AccountMenu.jsx";
 import { languages, useI18n } from "../../i18n.js";
 
 const links = [
@@ -14,12 +14,9 @@ const links = [
 
 export default function Navbar({ active }) {
   const { lang, setLang, t } = useI18n();
-  const user = getUser();
-  const initials = user && user.name ? initialsOf(user.name) : "AT";
 
   return (
     <header className="flex items-center justify-between gap-6 border-b border-navy/10 px-7 py-4">
-      {/* Logo */}
       <div className="flex items-center gap-3">
         <img src={crest} alt="SDU University" className="h-7.5" />
         <span className="h-5 w-px bg-navy/15"></span>
@@ -59,9 +56,7 @@ export default function Navbar({ active }) {
             </button>
           ))}
         </div>
-        <div className="flex size-8.5 items-center justify-center rounded-full bg-navy text-xs font-bold text-white">
-          {initials}
-        </div>
+        <AccountMenu />
       </div>
     </header>
   );

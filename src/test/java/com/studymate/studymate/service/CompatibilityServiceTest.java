@@ -49,7 +49,6 @@ class CompatibilityServiceTest {
 
     @Test
     void subjectAndTimeOnlyGivesSeventyPercent() {
-        // The example from the project documentation
         StudyGroup group = group(KnowledgeLevel.BEGINNER, Set.of(StudyPreference.QUIET_WORK));
 
         CompatibilityScore score = service.calculate(group, "MATH 161", KnowledgeLevel.ADVANCED,

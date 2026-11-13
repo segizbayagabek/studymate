@@ -33,6 +33,7 @@ const ru = {
   "Requested": "Заявки",
   "Chat": "Чат",
   "Profile": "Профиль",
+  "Log out": "Выйти",
 
   // Enums & Places & Levels & Preferences & Days
   "Library": "Библиотека",
@@ -150,6 +151,12 @@ const ru = {
   "Publish study request": "Опубликовать учебную группу",
   "your title here": "ваше название",
   "Please fill in the course code, a short title and what you'll do together.": "Пожалуйста, укажите код курса, короткое название и описание занятия.",
+  "Please fill in the subject, course code, a short title and what you'll do together.": "Пожалуйста, укажите предмет, код курса, короткое название и описание занятия.",
+  "Please pick today or a later day.": "Пожалуйста, выберите сегодняшний или более поздний день.",
+  "The meeting has to end after it starts.": "Время окончания встречи должно быть позже времени начала.",
+  "Pick a day and time": "Выберите день и время",
+  "e.g. Calculus II": "например, Математический анализ II",
+  "e.g. MATH 161": "например, MATH 161",
   "Live preview": "Предпросмотр",
   "How matching works": "Как работает подбор",
   "We compare subject, time overlap, course level and preferences — never grades. You always see the score before you accept anyone.": "Мы сравниваем предмет, совпадение по времени, уровень и предпочтения — но никогда оценки. Вы всегда видите процент совместимости перед принятием.",
@@ -264,6 +271,7 @@ const kz = {
   "Requested": "Өтінімдер",
   "Chat": "Чат",
   "Profile": "Профиль",
+  "Log out": "Шығу",
 
   // Enums & Places & Levels & Preferences & Days
   "Library": "Кітапхана",
@@ -381,6 +389,12 @@ const kz = {
   "Publish study request": "Оқу тобын жариялау",
   "your title here": "тақырыбыңыз",
   "Please fill in the course code, a short title and what you'll do together.": "Курс кодын, қысқаша атауын және бірге не істейтініңізді толтырыңыз.",
+  "Please fill in the subject, course code, a short title and what you'll do together.": "Пәнді, курс кодын, қысқаша атауын және бірге не істейтініңізді толтырыңыз.",
+  "Please pick today or a later day.": "Бүгінгі немесе кейінгі күнді таңдаңыз.",
+  "The meeting has to end after it starts.": "Кездесудің аяқталу уақыты басталу уақытынан кейін болуы керек.",
+  "Pick a day and time": "Күн мен уақытты таңдаңыз",
+  "e.g. Calculus II": "мысалы, Математикалық талдау II",
+  "e.g. MATH 161": "мысалы, MATH 161",
   "Live preview": "Алдын ала қарау",
   "How matching works": "Сәйкестендіру қалай жұмыс істейді",
   "We compare subject, time overlap, course level and preferences — never grades. You always see the score before you accept anyone.": "Біз бағаларды емес, пәнді, уақыт сәйкестігін, деңгейді және қалауларды салыстырамыз. Қабылдамас бұрын сәйкестік пайызын әрқашан көресіз.",

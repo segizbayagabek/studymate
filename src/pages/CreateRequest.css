@@ -81,7 +81,6 @@
 
 .sm-create__actions { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 8px; }
 
-/* sidebar preview */
 .sm-create__preview { border-radius: var(--sm-r-lg); }
 .sm-create__previewTitle { font: 600 16px/1.35 var(--sm-sans); color: var(--sm-navy); margin: 10px 0 8px; }
 .sm-create__previewFacts {

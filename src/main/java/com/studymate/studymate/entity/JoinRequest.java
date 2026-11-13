@@ -29,7 +29,6 @@ public class JoinRequest {
     @JoinColumn(name = "applicant_id", nullable = false)
     private User applicant;
 
-    // Applicant's answers
 
     @Column(nullable = false)
     private String courseCode;
@@ -53,7 +52,6 @@ public class JoinRequest {
     @Column(length = 500)
     private String note;
 
-    // Compatibility, each part is 0-100
 
     @Column(nullable = false)
     private int score;

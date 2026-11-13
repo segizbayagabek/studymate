@@ -5,6 +5,7 @@
 /Users/sunkar/Downloads/studymate/src/main/java/com/studymate/studymate/controller/StudyGroupController.java
 /Users/sunkar/Downloads/studymate/src/main/java/com/studymate/studymate/controller/TaskController.java
 /Users/sunkar/Downloads/studymate/src/main/java/com/studymate/studymate/controller/UserController.java
+/Users/sunkar/Downloads/studymate/src/main/java/com/studymate/studymate/dto/auth/LoginRequest.java
 /Users/sunkar/Downloads/studymate/src/main/java/com/studymate/studymate/dto/group/StudyGroupCreateRequest.java
 /Users/sunkar/Downloads/studymate/src/main/java/com/studymate/studymate/dto/group/StudyGroupResponse.java
 /Users/sunkar/Downloads/studymate/src/main/java/com/studymate/studymate/dto/request/JoinRequestCreateRequest.java

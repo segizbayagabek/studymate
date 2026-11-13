@@ -1,6 +1,5 @@
 import "./FactGrid.css";
 
-/** The three warm "When / Where / Group" tiles. */
 export default function FactGrid({ facts }) {
   return (
     <div className="sm-facts">

@@ -1,8 +1,11 @@
 package com.studymate.studymate.service;
 
+import com.studymate.studymate.dto.user.UserSummary;
 import com.studymate.studymate.entity.User;
 import com.studymate.studymate.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,6 +25,14 @@ public class UserService {
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public UserSummary login(String studentId, String password) {
+        User user = userRepository.findByEmail(studentId + "@sdu.edu.kz")
+                .filter(found -> found.getPassword().equals(password))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong student ID or password"));
+
+        return new UserSummary(user.getId(), user.getName());
     }
 
     public User createUser(User user) {

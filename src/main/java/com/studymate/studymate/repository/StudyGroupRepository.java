@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long>, JpaSpecificationExecutor<StudyGroup> {
 
-    // Load organizer and preferences in one query for the browse list
     @Override
     @EntityGraph(attributePaths = {"organizer", "preferences"})
     List<StudyGroup> findAll(Specification<StudyGroup> spec, Sort sort);

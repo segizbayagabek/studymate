@@ -1,0 +1,1250 @@
+{
+  "info": {
+    "name": "StudyMate — Study groups & join requests",
+    "description": "Endpoints for study groups, join requests and compatibility score.\n\nRun the whole collection top to bottom (Collection Runner): ids are saved into collection variables automatically. Set `baseUrl` if the backend is not on localhost:8080.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Meeting date for new groups: tomorrow",
+          "const d = new Date(Date.now() + 24 * 60 * 60 * 1000);",
+          "pm.collectionVariables.set(\"meetingDate\", d.toISOString().slice(0, 10));",
+          "// New email suffix at the start of every run, so users don't clash",
+          "if (pm.info.requestName === \"Create organizer\" || !pm.collectionVariables.get(\"runId\")) {",
+          "    pm.collectionVariables.set(\"runId\", Date.now().toString());",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "organizerId",
+      "value": ""
+    },
+    {
+      "key": "applicantId",
+      "value": ""
+    },
+    {
+      "key": "applicant2Id",
+      "value": ""
+    },
+    {
+      "key": "groupId",
+      "value": ""
+    },
+    {
+      "key": "group2Id",
+      "value": ""
+    },
+    {
+      "key": "requestId",
+      "value": ""
+    },
+    {
+      "key": "request2Id",
+      "value": ""
+    },
+    {
+      "key": "request3Id",
+      "value": ""
+    },
+    {
+      "key": "request4Id",
+      "value": ""
+    },
+    {
+      "key": "meetingDate",
+      "value": ""
+    },
+    {
+      "key": "runId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Setup — users",
+      "item": [
+        {
+          "name": "Create organizer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"organizerId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dana S.\",\n  \"email\": \"dana.{{runId}}@sdu.edu.kz\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create applicant 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"applicantId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nurislam B.\",\n  \"email\": \"nurislam.{{runId}}@sdu.edu.kz\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create applicant 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"applicant2Id\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Timur O.\",\n  \"email\": \"timur.{{runId}}@sdu.edu.kz\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "description": "Creates the users the rest of the collection works with. Emails get a unique suffix on every run."
+    },
+    {
+      "name": "1. Study groups",
+      "item": [
+        {
+          "name": "Create group",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"groupId\", pm.response.json().id);",
+                  "const g = pm.response.json();",
+                  "pm.test(\"Group is open with free seats\", () => {",
+                  "    pm.expect(g.status).to.eql(\"OPEN\");",
+                  "    pm.expect(g.seatsLeft).to.eql(g.groupSize - 1);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups"
+              ]
+            },
+            "description": "groupSize includes the organizer. Places: LIBRARY, CANTEEN, TOP_FLOOR. Levels: BEGINNER, INTERMEDIATE, ADVANCED. Preferences: QUIET_WORK, TALKATIVE, MIXED_GROUP, WOMEN_ONLY, MEN_ONLY, SAME_YEAR, ANY_LEVEL.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Calculus II — practice set together\",\n  \"description\": \"Work through the practice set, then explain solutions out loud to each other.\",\n  \"subjectName\": \"Calculus II\",\n  \"courseCode\": \"MATH 161\",\n  \"place\": \"LIBRARY\",\n  \"exactSpot\": \"2nd floor, table 14\",\n  \"meetingDate\": \"{{meetingDate}}\",\n  \"startTime\": \"14:00\",\n  \"endTime\": \"16:00\",\n  \"level\": \"INTERMEDIATE\",\n  \"preferences\": [\n    \"QUIET_WORK\"\n  ],\n  \"groupSize\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Browse open groups",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Exact spot is hidden in the public list\", () => {",
+                  "    pm.response.json().forEach(g => pm.expect(g.exactSpot).to.be.null);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/groups?courseCode=MATH 161",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups"
+              ],
+              "query": [
+                {
+                  "key": "courseCode",
+                  "value": "MATH 161"
+                },
+                {
+                  "key": "place",
+                  "value": "LIBRARY",
+                  "disabled": true
+                },
+                {
+                  "key": "level",
+                  "value": "INTERMEDIATE",
+                  "disabled": true
+                },
+                {
+                  "key": "dateFrom",
+                  "value": "{{meetingDate}}",
+                  "disabled": true
+                },
+                {
+                  "key": "dateTo",
+                  "value": "{{meetingDate}}",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Only OPEN groups from today on. All filters are optional; enable them in the Params tab."
+          }
+        },
+        {
+          "name": "My organized groups",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Group details (outsider)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Exact spot hidden\", () => pm.expect(pm.response.json().exactSpot).to.be.null);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicantId}}/groups/{{groupId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicantId}}",
+                "groups",
+                "{{groupId}}"
+              ]
+            },
+            "description": "exactSpot is shown only to the organizer and accepted members."
+          }
+        },
+        {
+          "name": "Group details (organizer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Exact spot visible\", () => pm.expect(pm.response.json().exactSpot).to.be.a(\"string\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups/{{groupId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups",
+                "{{groupId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Join requests",
+      "item": [
+        {
+          "name": "Apply — strong match",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"requestId\", pm.response.json().id);",
+                  "const r = pm.response.json();",
+                  "pm.test(\"Pending with full score\", () => {",
+                  "    pm.expect(r.status).to.eql(\"PENDING\");",
+                  "    pm.expect(r.score).to.eql(100);",
+                  "    pm.expect(r.breakdown).to.have.keys(\"subject\", \"time\", \"level\", \"preferences\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicantId}}/groups/{{groupId}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicantId}}",
+                "groups",
+                "{{groupId}}",
+                "requests"
+              ]
+            },
+            "description": "Score = subject 40% + time 30% + level 20% + preferences 10%. Each breakdown part is 0-100.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseCode\": \"MATH 161\",\n  \"level\": \"INTERMEDIATE\",\n  \"availableFrom\": \"13:00\",\n  \"availableTo\": \"17:00\",\n  \"preferences\": [\n    \"QUIET_WORK\"\n  ],\n  \"note\": \"I've done chapters 5–6 already and can explain u-substitution.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Apply — partial match",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"request2Id\", pm.response.json().id);",
+                  "pm.test(\"Lower score\", () => pm.expect(pm.response.json().score).to.be.below(100));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicant2Id}}/groups/{{groupId}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicant2Id}}",
+                "groups",
+                "{{groupId}}",
+                "requests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseCode\": \"MATH 162\",\n  \"level\": \"ADVANCED\",\n  \"availableFrom\": \"15:00\",\n  \"availableTo\": \"18:00\",\n  \"preferences\": [\n    \"TALKATIVE\"\n  ],\n  \"note\": \"Only free after 15:00.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Applicants of my group (organizer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "const scores = pm.response.json().map(r => r.score);",
+                  "pm.test(\"Sorted by score, best first\", () => {",
+                  "    pm.expect(scores).to.eql([...scores].sort((a, b) => b - a));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups/{{groupId}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups",
+                "{{groupId}}",
+                "requests"
+              ]
+            }
+          }
+        },
+        {
+          "name": "My requests (applicant)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicantId}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicantId}}",
+                "requests"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Accept request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Accepted\", () => pm.expect(pm.response.json().status).to.eql(\"ACCEPTED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/requests/{{requestId}}/accept",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "requests",
+                "{{requestId}}",
+                "accept"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Group details (accepted member)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Exact spot now visible\", () => pm.expect(pm.response.json().exactSpot).to.be.a(\"string\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicantId}}/groups/{{groupId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicantId}}",
+                "groups",
+                "{{groupId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reject request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Rejected\", () => pm.expect(pm.response.json().status).to.eql(\"REJECTED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/requests/{{request2Id}}/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "requests",
+                "{{request2Id}}",
+                "reject"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Cancelling",
+      "item": [
+        {
+          "name": "Create second group",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"group2Id\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Calculus II — practice set together\",\n  \"description\": \"Work through the practice set, then explain solutions out loud to each other.\",\n  \"subjectName\": \"Calculus II\",\n  \"courseCode\": \"MATH 161\",\n  \"place\": \"LIBRARY\",\n  \"exactSpot\": \"2nd floor, table 14\",\n  \"meetingDate\": \"{{meetingDate}}\",\n  \"startTime\": \"14:00\",\n  \"endTime\": \"16:00\",\n  \"level\": \"INTERMEDIATE\",\n  \"preferences\": [\n    \"QUIET_WORK\"\n  ],\n  \"groupSize\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Apply to second group",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"request3Id\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicant2Id}}/groups/{{group2Id}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicant2Id}}",
+                "groups",
+                "{{group2Id}}",
+                "requests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseCode\": \"MATH 161\",\n  \"level\": \"INTERMEDIATE\",\n  \"availableFrom\": \"13:00\",\n  \"availableTo\": \"17:00\",\n  \"preferences\": [\n    \"QUIET_WORK\"\n  ],\n  \"note\": \"I've done chapters 5–6 already and can explain u-substitution.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Cancel own request (applicant)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Cancelled\", () => pm.expect(pm.response.json().status).to.eql(\"CANCELLED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicant2Id}}/requests/{{request3Id}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicant2Id}}",
+                "requests",
+                "{{request3Id}}",
+                "cancel"
+              ]
+            },
+            "description": "Only PENDING requests can be cancelled. After cancelling, the student may apply again."
+          }
+        },
+        {
+          "name": "Apply again after cancel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"request4Id\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicant2Id}}/groups/{{group2Id}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicant2Id}}",
+                "groups",
+                "{{group2Id}}",
+                "requests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseCode\": \"MATH 161\",\n  \"level\": \"INTERMEDIATE\",\n  \"availableFrom\": \"13:00\",\n  \"availableTo\": \"17:00\",\n  \"preferences\": [\n    \"QUIET_WORK\"\n  ],\n  \"note\": \"I've done chapters 5–6 already and can explain u-substitution.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Cancel group (organizer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Cancelled\", () => pm.expect(pm.response.json().status).to.eql(\"CANCELLED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups/{{group2Id}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups",
+                "{{group2Id}}",
+                "cancel"
+              ]
+            },
+            "description": "Pending requests of the group are rejected automatically."
+          }
+        },
+        {
+          "name": "Pending request was auto-rejected",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "const r = pm.response.json().find(x => x.id === Number(pm.collectionVariables.get(\"request4Id\")));",
+                  "pm.test(\"Rejected after group cancel\", () => pm.expect(r.status).to.eql(\"REJECTED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicant2Id}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicant2Id}}",
+                "requests"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Error cases",
+      "item": [
+        {
+          "name": "400 — endTime before startTime",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Calculus II — practice set together\",\n  \"description\": \"Work through the practice set, then explain solutions out loud to each other.\",\n  \"subjectName\": \"Calculus II\",\n  \"courseCode\": \"MATH 161\",\n  \"place\": \"LIBRARY\",\n  \"exactSpot\": \"2nd floor, table 14\",\n  \"meetingDate\": \"{{meetingDate}}\",\n  \"startTime\": \"16:00\",\n  \"endTime\": \"14:00\",\n  \"level\": \"INTERMEDIATE\",\n  \"preferences\": [\n    \"QUIET_WORK\"\n  ],\n  \"groupSize\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 — empty body",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "404 — unknown group",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicantId}}/groups/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicantId}}",
+                "groups",
+                "999999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "404 — non-organizer lists applicants",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicantId}}/groups/{{groupId}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicantId}}",
+                "groups",
+                "{{groupId}}",
+                "requests"
+              ]
+            }
+          }
+        },
+        {
+          "name": "404 — applicant tries to accept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicantId}}/requests/{{requestId}}/accept",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicantId}}",
+                "requests",
+                "{{requestId}}",
+                "accept"
+              ]
+            }
+          }
+        },
+        {
+          "name": "409 — duplicate request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{applicantId}}/groups/{{groupId}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{applicantId}}",
+                "groups",
+                "{{groupId}}",
+                "requests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseCode\": \"MATH 161\",\n  \"level\": \"INTERMEDIATE\",\n  \"availableFrom\": \"13:00\",\n  \"availableTo\": \"17:00\",\n  \"preferences\": [\n    \"QUIET_WORK\"\n  ],\n  \"note\": \"I've done chapters 5–6 already and can explain u-substitution.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 — organizer applies to own group",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups/{{groupId}}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups",
+                "{{groupId}}",
+                "requests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseCode\": \"MATH 161\",\n  \"level\": \"INTERMEDIATE\",\n  \"availableFrom\": \"13:00\",\n  \"availableTo\": \"17:00\",\n  \"preferences\": [\n    \"QUIET_WORK\"\n  ],\n  \"note\": \"I've done chapters 5–6 already and can explain u-substitution.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 — accept already decided request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/requests/{{requestId}}/accept",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "requests",
+                "{{requestId}}",
+                "accept"
+              ]
+            }
+          }
+        },
+        {
+          "name": "409 — cancel group twice",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{organizerId}}/groups/{{group2Id}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{organizerId}}",
+                "groups",
+                "{{group2Id}}",
+                "cancel"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Every error response is a ProblemDetail JSON: status, title, detail (and errors for validation)."
+    }
+  ]
+}
