@@ -1,0 +1,50 @@
+# Run the whole app with: docker compose up --build
+#   Website:  http://localhost:3000
+#   API:      http://localhost:8080/api
+#   Database: localhost:5434 (user/password from .env, default studymate/studymate)
+# Secrets (Gmail login) and port changes are read from the .env file next to this one.
+# See .env.example.
+
+name: studymate
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: studymate
+      POSTGRES_USER: ${DB_USER:-studymate}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-studymate}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5434}:5432" # not 5432, so it doesn't clash with a local PostgreSQL
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d studymate"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/studymate
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-studymate}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-studymate}
+      SPRING_JPA_SHOW_SQL: "false"
+      GMAIL_USER: ${GMAIL_USER:-}
+      GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD:-}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      - backend
+
+volumes:
+  db-data:

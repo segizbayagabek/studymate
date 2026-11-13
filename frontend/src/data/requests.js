@@ -1,0 +1,46 @@
+// The study requests the app starts with.
+// App.jsx keeps them in state, so new ones from the Create page get added to this list.
+export const startingRequests = [
+  {
+    id: 1,
+    code: "MATH 161",
+    match: 92,
+    title: "Calculus II — integration techniques before Friday's quiz",
+    description: "Working through the practice set together, then explaining solutions out loud to each other. Bring your own paper.",
+    place: "Library · 2nd floor",
+    time: "Today, 14:00 – 16:00",
+    style: "Quiet work",
+    seatsLeft: 2,
+    groupSize: 4,
+    owner: { initials: "DS", name: "Dana S.", faculty: "Engineering & Natural Sciences · Year 2", rating: 4.8 },
+    highlight: true, // the best match gets the peach stripe
+  },
+  {
+    id: 2,
+    code: "CS 204",
+    match: 78,
+    title: "Data structures — pair-explaining graph traversal",
+    description: "Whiteboard session. Everyone teaches one algorithm to the group — BFS, DFS, Dijkstra.",
+    place: "Top floor · study pods",
+    time: "Today, 17:30 – 19:00",
+    style: "Talkative",
+    seatsLeft: 3,
+    groupSize: 4,
+    owner: { initials: "AB", name: "Arman B.", faculty: "Engineering & Natural Sciences · Year 3", rating: 4.6 },
+    highlight: false,
+  },
+  {
+    id: 3,
+    code: "ENG 102",
+    match: 71,
+    title: "Academic English — essay peer review over coffee",
+    description: "Bring a draft. We read each other's introductions and thesis statements aloud.",
+    place: "Canteen · window side",
+    time: "Tomorrow, 12:30 – 13:30",
+    style: "Women only",
+    seatsLeft: 1,
+    groupSize: 3,
+    owner: { initials: "MK", name: "Madina K.", faculty: "Education & Humanities · Year 1", rating: 4.9 },
+    highlight: false,
+  },
+];

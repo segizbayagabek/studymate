@@ -1,0 +1,48 @@
+/* Halloween pumpkins. Everything here only works while <PumpkinPatch /> is on the page. */
+
+/* Wobbling: rock a little left-right, standing on the bottom edge */
+@keyframes pumpkin-wobble {
+  from {
+    transform: rotate(-3deg);
+  }
+  to {
+    transform: rotate(3deg);
+  }
+}
+
+/* The face is dark most of the time, then flickers bright like a candle inside */
+@keyframes pumpkin-glow {
+  0%,
+  80%,
+  100% {
+    fill: #5c4f45;
+    filter: none;
+  }
+  84%,
+  92% {
+    fill: #f5b041;
+    filter: drop-shadow(0 0 6px #f39c12);
+  }
+  88% {
+    fill: #e67e22;
+    filter: drop-shadow(0 0 3px #e67e22);
+  }
+}
+
+.pumpkin-wobble {
+  transform-origin: bottom center;
+  animation: pumpkin-wobble ease-in-out infinite alternate;
+}
+
+.pumpkin-face {
+  animation: pumpkin-glow 5s infinite;
+  animation-delay: var(--glow-delay);
+}
+
+/* People who turned off animations in their system settings get still pumpkins */
+@media (prefers-reduced-motion: reduce) {
+  .pumpkin-wobble,
+  .pumpkin-face {
+    animation: none;
+  }
+}

@@ -1,0 +1,62 @@
+/* Autumn mode. Everything here only works while <FallingLeaves /> is on the page. */
+
+/* Falling: move from the top of the screen to below the bottom */
+@keyframes leaf-fall {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(100vh + 80px));
+  }
+}
+
+/* Swaying: swing left-right and spin a little while falling */
+@keyframes leaf-sway {
+  from {
+    transform: translateX(-25px) rotate(-25deg);
+  }
+  to {
+    transform: translateX(25px) rotate(35deg);
+  }
+}
+
+.leaf-fall {
+  animation: leaf-fall linear infinite;
+  opacity: 0.9;
+}
+
+.leaf-sway {
+  animation: leaf-sway ease-in-out infinite alternate;
+}
+
+/* A small leaf on the corner of the main (bold, rounded) buttons.
+   "body:has(.autumn-leaves)" means: only while the falling leaves are turned on. */
+body:has(.autumn-leaves) button.rounded-full.font-bold {
+  position: relative;
+}
+
+body:has(.autumn-leaves) button.rounded-full.font-bold::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 19C5 10 10 4 20 4c0 10-6 15-15 15z' fill='%23c2410c'/%3E%3Cpath d='M3 21L16 8' stroke='rgba(0,0,0,0.25)' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+  transform: rotate(-15deg);
+  transition: transform 0.3s;
+  pointer-events: none;
+}
+
+/* The leaf wiggles when you hover the button */
+body:has(.autumn-leaves) button.rounded-full.font-bold:hover::after {
+  transform: rotate(20deg) translateY(-2px);
+}
+
+/* People who turned off animations in their system settings don't get moving leaves */
+@media (prefers-reduced-motion: reduce) {
+  .autumn-leaves {
+    display: none;
+  }
+}

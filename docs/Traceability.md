@@ -1,0 +1,33 @@
+# StudyMate interface to database traceability
+
+Proposed design mapped to the current SRS. Screen numbers match the wireframe assets. Should and Could screens are included in design coverage without promoting their priority. Derived values and controls have explicit mappings without invented database columns.
+
+| Screen | UI field | Database mapping | Requirement | Rule |
+|---|---|---|---|---|
+| 01 Register | Name | users.full_name | US-01 | Required; proposed maximum 120 characters |
+| 01 Register / 02 Sign in | Email | users.email | US-01 / US-02 | Required, unique on register; normalize lowercase |
+| 01 Register / 02 Sign in | Password | users.password_hash | US-01 / US-02; NFR-03 | Hash on server; raw password is never persisted |
+| 04 Profile | Subject and level | user_subject_levels.subject_id; knowledge_level | US-03 / US-04 | One level for each selected subject |
+| 04 Profile | Availability | user_availability.available_from; available_until | US-03 / US-04 | End must follow start |
+| 04 Profile | Optional study style | user_preferences.preference_id | US-03 / US-04 | Separate rows; labels in preference_options |
+| 05 Create group | Course / subject | study_groups.subject_id; subjects.course_code, name | US-05 | Select existing subject; do not duplicate its name |
+| 05 Create group | Title and description | study_groups.title; description | US-05 | Proposed display fields, retained from existing frontend |
+| 05 Create group | Meeting place | study_groups.place | US-05 | Required |
+| 05 Create group | Meeting date and time | study_groups.meeting_start; meeting_end | US-05 | Future interval; display Asia/Almaty |
+| 05 Create group | Requested level | study_groups.required_level | US-05 / US-17 | Required for the level comparison |
+| 05 Create group | Study style | group_preferences.preference_id | US-17 / US-18 | Optional; no set means zero preference points |
+| 05 Create / 06 Details | Organizer | study_groups.organizer_id; users.full_name | US-05 / US-09 | ID comes from session; display name via users |
+| 03 Browse / 06 Details | Subject, place, time | study_groups.subject_id; place; meeting_start; meeting_end | US-06 / US-09 | Read from group and subject rows |
+| 03 Browse | Subject / time filters | Query subjects.subject_id; study_groups.meeting_start | US-07 / US-08 | Query controls; no saved filter columns |
+| 07 Apply | Selected subject | join_requests.answer_subject_id | US-10 / US-17 | Required; saved application answer |
+| 07 Apply | Available interval | join_requests.available_from; available_until | US-10 / US-17 | Required; full-session coverage proposed |
+| 07 Apply | Knowledge level | join_requests.answer_level | US-10 / US-17 | Required |
+| 07 Apply | Study preferences | request_preferences.preference_id | US-10 / US-18 | Optional; empty contributes zero |
+| 07 Submit | Applicant and group | join_requests.applicant_id; group_id | US-11 | Applicant from session; group from selected record |
+| 08 My requests | Status and submitted time | join_requests.status; submitted_at | US-11 / US-12 | Pending, Accepted or Rejected |
+| 09 Incoming requests | Candidate name | join_requests.applicant_id; users.full_name | US-13 | Organizer-only request access |
+| 10 Review / 08 Requests | Compatibility score and breakdown | Derived from request answers, group requirements and preference junctions | US-16 / US-17 / US-18 | No persisted score column; show 40+30+0+0=70 |
+| 10 Accept / Reject | Decision and time | join_requests.status; decided_at | US-14 / US-15 | Organizer-only conditional Pending update |
+| 15 My groups / accepted state | Members | group_members view over Accepted join_requests | US-14 | No independent membership record |
+| 13/14/16/17 Error states | Validation message | No database column | US-01 / US-02 / US-05 / US-10 | UI/server response; blocked input is not persisted |
+| 18 Empty browse | No matching groups | Query yields zero rows | US-06 | Display empty-state message |

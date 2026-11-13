@@ -1,0 +1,77 @@
+/* Fonts from Google: Manrope for normal text, Newsreader for the serif titles */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #262a54;
+  --color-navy-dark: #1c2046;
+  --color-peach: #e9a87c;
+  --color-peach-light: #f6d9c2;
+  --color-peach-dark: #b9703c;
+  --color-paper: #fdfbf7;
+  --color-warm: #f5f2ec;
+  --color-sand: #e7e3da;
+  --color-ink: #4b5163;
+  --color-muted: #6b7280;
+  --color-sage: #3d6b4f;
+  --color-sage-light: #e3eee5;
+  --color-clay: #a3443a;
+  --color-clay-light: #f6e0db;
+  --color-honey: #7a5a12;
+  --color-honey-light: #f5e9c6;
+
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
+}
+
+body {
+  @apply bg-sand font-sans text-navy antialiased;
+}
+
+/* ---------- Dark mode ----------
+   When <html> has the "dark" class we swap the colors above for darker ones.
+   Every page uses bg-paper, text-navy, text-muted, ... so the whole site changes at once. */
+@layer base {
+  .dark {
+    color-scheme: dark;
+    --color-navy: #ecebf3; /* text and thin borders become light */
+    --color-navy-dark: #ffffff;
+    --color-paper: #191c36;
+    --color-warm: #222644;
+    --color-sand: #13152b;
+    --color-ink: #c9ccd8;
+    --color-muted: #9ca1b3;
+    --color-peach-dark: #f0b088;
+    --color-sage: #8fc4a0;
+    --color-clay: #ec8f84;
+    --color-honey: #e3c069;
+  }
+
+  /* Dark blue boxes (nav bar, buttons, rating card) stay dark blue, just a bit lighter than the page */
+  .dark .bg-navy {
+    --color-navy: #353b78;
+    --color-navy-dark: #424993;
+    --color-paper: #fdfbf7;
+  }
+
+  /* The dark blue crest in the top bar would disappear, so make it light */
+  .dark header img {
+    filter: brightness(0) invert(1);
+  }
+
+  /* Light boxes (peach buttons, status pills) keep their normal colors inside */
+  .dark :is(.bg-peach, .bg-peach-light, .bg-white, .bg-sage-light, .bg-clay-light, .bg-honey-light) {
+    --color-navy: #262a54;
+    --color-navy-dark: #1c2046;
+    --color-paper: #fdfbf7;
+    --color-warm: #f5f2ec;
+    --color-ink: #4b5163;
+    --color-muted: #6b7280;
+    --color-peach-dark: #b9703c;
+    --color-sage: #3d6b4f;
+    --color-clay: #a3443a;
+    --color-honey: #7a5a12;
+    color: var(--color-navy);
+  }
+}
