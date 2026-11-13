@@ -1,18 +1,27 @@
 import { dayLabel, fromEnum, timeRange } from "../../api.js";
+import { useI18n } from "../../i18n.js";
 
-function spotText(group) {
-  if (group.exactSpot === null) return "Exact spot after you're accepted";
-  return group.exactSpot || "No exact spot given";
+function spotText(group, t) {
+  if (group.exactSpot === null) return t("Exact spot after you're accepted");
+  return group.exactSpot || t("No exact spot given");
+}
+
+function membersOfText(current, total, lang) {
+  if (lang === "RU") return current + " из " + total + " участников";
+  if (lang === "KZ") return total + "-тен " + current + " қатысушы";
+  return current + " of " + total + " members";
 }
 
 export default function GroupFacts({ group }) {
+  const { lang, t } = useI18n();
+
   const facts = [
-    { label: "When", lines: [dayLabel(group.meetingDate), timeRange(group.startTime, group.endTime)] },
-    { label: "Where", lines: [fromEnum(group.place), spotText(group)] },
+    { label: t("When"), lines: [dayLabel(group.meetingDate), timeRange(group.startTime, group.endTime)] },
+    { label: t("Where"), lines: [t(fromEnum(group.place)), spotText(group, t)] },
     {
-      label: "Group",
-      lines: [group.memberCount + 1 + " of " + group.groupSize + " members"],
-      muted: group.preferences.map(fromEnum).join(" · ") || "No preferences",
+      label: t("Group"),
+      lines: [membersOfText(group.memberCount + 1, group.groupSize, lang)],
+      muted: group.preferences.map((p) => t(fromEnum(p))).join(" · ") || t("No preferences"),
     },
   ];
 

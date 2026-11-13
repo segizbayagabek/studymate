@@ -7,6 +7,7 @@ import RequestCard from "../components/browse/RequestCard.jsx";
 import FullGroupCard from "../components/browse/FullGroupCard.jsx";
 import Sidebar from "../components/browse/Sidebar.jsx";
 import { fromEnum, getGroups, getMyRequests, getUser, initialsOf, joinGroup, whenText } from "../api.js";
+import { useI18n } from "../i18n.js";
 
 function partOfDay(time) {
   const hour = Number(time.slice(0, 2));
@@ -27,16 +28,16 @@ function matchesFilters(group, filters) {
   );
 }
 
-function toCard(group, user, sentGroupIds) {
+function toCard(group, user, sentGroupIds, t) {
   return {
     id: group.id,
     code: group.courseCode,
     level: fromEnum(group.level).toUpperCase(),
-    title: group.subjectName + " — " + group.title,
+    title: t(group.subjectName) + " — " + group.title,
     description: group.description,
-    place: fromEnum(group.place),
+    place: t(fromEnum(group.place)),
     time: whenText(group),
-    style: group.preferences.length > 0 ? group.preferences.map(fromEnum).join(" · ") : "No preferences",
+    style: group.preferences.length > 0 ? group.preferences.map((p) => t(fromEnum(p))).join(" · ") : t("No preferences"),
     seatsLeft: group.seatsLeft,
     groupSize: group.groupSize,
     owner: { initials: initialsOf(group.organizer.name), name: group.organizer.name, faculty: "SDU University" },
@@ -48,6 +49,7 @@ function toCard(group, user, sentGroupIds) {
 }
 
 export default function Browse() {
+  const { t } = useI18n();
   const user = getUser();
   const userId = user ? user.id : null;
   const [groups, setGroups] = useState([]);
@@ -77,7 +79,7 @@ export default function Browse() {
   const subjects = [...new Set(groups.map((group) => group.subjectName))];
   const cards = groups
     .filter((group) => matchesFilters(group, filters))
-    .map((group) => toCard(group, user, sentGroupIds));
+    .map((group) => toCard(group, user, sentGroupIds, t));
 
   return (
     <div className="flex min-h-screen flex-col bg-paper">
@@ -93,7 +95,7 @@ export default function Browse() {
           <div className="flex flex-col gap-3.5">
             {cards.length === 0 && (
               <p className="rounded-2xl border border-dashed border-navy/20 p-6 text-sm font-medium text-muted">
-                {groups.length === 0 ? "No open groups right now." : "No groups match these filters."}
+                {groups.length === 0 ? t("No open groups right now.") : t("No groups match these filters.")}
               </p>
             )}
             {cards.map((card) => (

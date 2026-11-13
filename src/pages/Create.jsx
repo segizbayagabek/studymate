@@ -11,6 +11,7 @@ import FieldLabel from "../components/create/FieldLabel.jsx";
 import Select from "../components/create/Select.jsx";
 import PreviewSidebar from "../components/create/PreviewSidebar.jsx";
 import { createGroup, getUser, initialsOf, toEnum } from "../api.js";
+import { useI18n } from "../i18n.js";
 
 const subjects = [
   { name: "Calculus II", code: "MATH 161" },
@@ -44,6 +45,7 @@ function dateInDays(daysFromToday) {
 }
 
 export default function Create() {
+  const { t } = useI18n();
   const user = getUser();
   const me = user
     ? { initials: initialsOf(user.name), name: user.name, faculty: "SDU University" }
@@ -68,12 +70,12 @@ export default function Create() {
   // The live preview on the right uses this, so it updates as you type.
   const request = {
     code: code,
-    title: subject + " — " + (title || "your title here"),
+    title: t(subject) + " — " + (title || t("your title here")),
     description: description,
-    place: place,
+    place: t(place),
     exactSpot: exactSpot, // only for accepted members, not shown on Browse
-    time: day + ", " + time,
-    style: chosenPreferences.length > 0 ? chosenPreferences.join(" · ") : "No preferences",
+    time: t(day) + ", " + time,
+    style: chosenPreferences.length > 0 ? chosenPreferences.map(t).join(" · ") : t("No preferences"),
     seatsLeft: groupSize - 1, // you already take one seat
     groupSize: groupSize,
     owner: me,
@@ -85,7 +87,7 @@ export default function Create() {
     e.preventDefault();
 
     if (code.trim() === "" || title.trim() === "" || description.trim() === "") {
-      setError("Please fill in the course code, a short title and what you'll do together.");
+      setError(t("Please fill in the course code, a short title and what you'll do together."));
       return;
     }
 
@@ -154,7 +156,7 @@ export default function Create() {
             />
 
             <label className="block max-w-xs">
-              <FieldLabel>Your level in this subject</FieldLabel>
+              <FieldLabel>{t("Your level in this subject")}</FieldLabel>
               <Select value={level} onChange={setLevel} options={levels} />
             </label>
 
@@ -167,7 +169,7 @@ export default function Create() {
             {error && <p className="text-[13px] font-semibold text-red-600">{error}</p>}
 
             <button type="submit" className="w-fit rounded-full bg-navy px-10 py-4 text-sm font-bold text-white hover:bg-navy-dark">
-              Post request
+              {t("Publish study request")}
             </button>
           </form>
         </main>

@@ -1,14 +1,24 @@
 import ScoreDiamond from "./ScoreDiamond.jsx";
 import ScoreBreakdown from "./ScoreBreakdown.jsx";
 import { fromEnum, initialsOf, timeRange } from "../../api.js";
+import { useI18n } from "../../i18n.js";
 
-function hintFor(applicant) {
-  if (applicant.breakdown.level < 60) return "Level gap is wide — a good chance to teach.";
-  if (applicant.breakdown.time < 100) return "Only part of the session fits their free time.";
+function hintFor(applicant, t) {
+  if (applicant.breakdown.level < 60) return t("Level gap is wide — a good chance to teach.");
+  if (applicant.breakdown.time < 100) return t("Only part of the session fits their free time.");
   return "";
 }
 
+function levelAndFreeText(applicant, lang, t) {
+  const lvl = t(fromEnum(applicant.level));
+  const range = timeRange(applicant.availableFrom, applicant.availableTo);
+  if (lang === "RU") return lvl + " уровень · свободен(на) " + range;
+  if (lang === "KZ") return lvl + " деңгей · бос уақыты " + range;
+  return lvl + " level · free " + range;
+}
+
 export default function ApplicantCard({ applicant, canAccept, onAccept, onDecline }) {
+  const { lang, t } = useI18n();
   const strong = applicant.score >= 85;
 
   return (
@@ -28,7 +38,7 @@ export default function ApplicantCard({ applicant, canAccept, onAccept, onDeclin
           <div>
             <div className="text-[19px] font-semibold">{applicant.applicant.name}</div>
             <div className="text-[13.5px] font-medium text-muted">
-              {fromEnum(applicant.level)} level · free {timeRange(applicant.availableFrom, applicant.availableTo)}
+              {levelAndFreeText(applicant, lang, t)}
             </div>
           </div>
         </div>
@@ -41,14 +51,14 @@ export default function ApplicantCard({ applicant, canAccept, onAccept, onDeclin
           <div className="mt-4 flex flex-wrap gap-2">
             {applicant.preferences.map((preference) => (
               <span key={preference} className="rounded-full bg-warm px-3.5 py-1.5 text-[12.5px] font-semibold text-ink">
-                {fromEnum(preference)}
+                {t(fromEnum(preference))}
               </span>
             ))}
           </div>
         )}
       </div>
 
-      <ScoreBreakdown breakdown={applicant.breakdown} hint={hintFor(applicant)} />
+      <ScoreBreakdown breakdown={applicant.breakdown} hint={hintFor(applicant, t)} />
 
       <div className="flex flex-col gap-3">
         <button
@@ -56,10 +66,10 @@ export default function ApplicantCard({ applicant, canAccept, onAccept, onDeclin
           disabled={!canAccept}
           className="rounded-full bg-navy py-4 text-sm font-bold text-white hover:bg-navy-dark disabled:opacity-40"
         >
-          Accept
+          {t("Accept")}
         </button>
         <button onClick={onDecline} className="rounded-full border border-navy/15 py-4 text-sm font-semibold hover:bg-warm">
-          Decline
+          {t("Decline")}
         </button>
       </div>
     </article>

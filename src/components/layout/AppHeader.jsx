@@ -1,12 +1,16 @@
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { navItems, languages } from "../../data/navigation";
+import { getUser, initialsOf } from "../../api.js";
+import { useI18n } from "../../i18n.js";
 import Avatar from "../ui/Avatar";
 import crest from "../../assets/sdu-crest.png";
 import "./AppHeader.css";
 
 export default function AppHeader({ user = { initials: "AT" } }) {
-  const [lang, setLang] = useState("EN");
+  const { lang, setLang, t } = useI18n();
+  const savedUser = getUser();
+  const initials = savedUser && savedUser.name ? initialsOf(savedUser.name) : user.initials;
+
   return (
     <header className="sm-header">
       <div className="sm-header__brand">
@@ -22,7 +26,7 @@ export default function AppHeader({ user = { initials: "AT" } }) {
             to={item.to}
             className={({ isActive }) => `sm-nav__link ${isActive ? "is-active" : ""}`}
           >
-            {item.label}
+            {t(item.label)}
           </NavLink>
         ))}
       </nav>
@@ -40,7 +44,7 @@ export default function AppHeader({ user = { initials: "AT" } }) {
             </button>
           ))}
         </div>
-        <Avatar initials={user.initials} size={34} />
+        <Avatar initials={initials} size={34} />
       </div>
     </header>
   );

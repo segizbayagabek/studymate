@@ -7,8 +7,16 @@ import ApplicantCard from "../components/applicants/ApplicantCard.jsx";
 import LowMatchRow from "../components/applicants/LowMatchRow.jsx";
 import GroupMembers from "../components/applicants/GroupMembers.jsx";
 import { acceptRequest, declineRequest, getApplicants, getGroup, getUser } from "../api.js";
+import { useI18n } from "../i18n.js";
+
+function showMoreLowText(count, lang) {
+  if (lang === "RU") return "Показать ещё " + count + " " + (count === 1 ? "заявку" : "заявок") + " ниже 60%";
+  if (lang === "KZ") return "60%-дан төмен тағы " + count + " өтінімді көрсету";
+  return "Show " + count + " more " + (count === 1 ? "applicant" : "applicants") + " under 60%";
+}
 
 export default function Applicants() {
+  const { lang } = useI18n();
   const user = getUser();
   const userId = user ? user.id : null;
   const { groupId } = useParams();
@@ -81,7 +89,7 @@ export default function Applicants() {
               className="mx-auto mt-2 flex items-center gap-2 text-sm font-bold text-peach-dark hover:underline"
             >
               <Diamond />
-              Show {hiddenMatches.length} more {hiddenMatches.length === 1 ? "applicant" : "applicants"} under 60%
+              {showMoreLowText(hiddenMatches.length, lang)}
             </button>
           )}
 
